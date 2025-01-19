@@ -7,10 +7,7 @@ const MenuBar = ({ onCategoryChange, onSkinTypeChange }) => {
     onCategoryChange(category); // Pass selected category back to parent
   };
 
-  const handleSkinTypeChange = (event) => {
-    const skinType = event.target.value;
-    onSkinTypeChange(skinType); // Pass selected skin type back to parent
-  };
+  
 
   return (
     <div className="menu-bar">
@@ -20,111 +17,48 @@ const MenuBar = ({ onCategoryChange, onSkinTypeChange }) => {
           <li>
             <input
               type="radio"
-              id="foundation"
+              id="Anklets"
               name="productCategory"
-              value="Foundation"
+              value="Anklets"
               onChange={handleCategoryChange}
             />
-            <label htmlFor="foundation">Foundation</label>
+            <label htmlFor="Anklets">Anklets</label>
           </li>
           <li>
             <input
               type="radio"
-              id="concealer"
+              id="Braclets"
               name="productCategory"
-              value="Concealer"
+              value="Braclets"
               onChange={handleCategoryChange}
             />
-            <label htmlFor="concealer">Concealer</label>
+            <label htmlFor="Braclets">Braclets</label>
           </li>
           <li>
             <input
               type="radio"
-              id="cleanser"
+              id="Earrings"
               name="productCategory"
-              value="Cleanser"
+              value="Earrings"
               onChange={handleCategoryChange}
             />
-            <label htmlFor="cleanser">Cleanser</label>
+            <label htmlFor="Earrings">Earrings</label>
           </li>
           <li>
             <input
               type="radio"
-              id="blush"
+              id="Necklaces"
               name="productCategory"
-              value="Blush"
+              value="Necklaces"
               onChange={handleCategoryChange}
             />
-            <label htmlFor="blush">Blush</label>
+            <label htmlFor="Necklaces">Necklaces</label>
           </li>
-          <li>
-            <input
-              type="radio"
-              id="moisturizer"
-              name="productCategory"
-              value="Moisturizer"
-              onChange={handleCategoryChange}
-            />
-            <label htmlFor="moisturizer">Moisturizer</label>
-          </li>
+          
         </ul>
       </div>
 
-      <div className="menu-options">
-        <span className="menu-label">Skin Type:</span>
-        <ul>
-          <li>
-            <input
-              type="radio"
-              id="normal"
-              name="skinType"
-              value="Normal"
-              onChange={handleSkinTypeChange}
-            />
-            <label htmlFor="normal">Normal Skin</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="dry"
-              name="skinType"
-              value="Dry"
-              onChange={handleSkinTypeChange}
-            />
-            <label htmlFor="dry">Dry Skin</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="oily"
-              name="skinType"
-              value="Oily"
-              onChange={handleSkinTypeChange}
-            />
-            <label htmlFor="oily">Oily Skin</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="combination"
-              name="skinType"
-              value="Combination"
-              onChange={handleSkinTypeChange}
-            />
-            <label htmlFor="combination">Combination Skin</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="acneProne"
-              name="skinType"
-              value="Acne-Prone"
-              onChange={handleSkinTypeChange}
-            />
-            <label htmlFor="acneProne">Acne Prone Skin</label>
-          </li>
-        </ul>
-      </div>
+     
     </div>
   );
 };

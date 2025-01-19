@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaHeart, FaShoppingCart, FaUser } from 'react-icons/fa'; // Import icons from react-icons
+import { FaHeart, FaShoppingCart, FaDoorOpen } from 'react-icons/fa'; // Import icons from react-icons
 import logo from '../assets/images/logo.png';
 import './NavBar.css';
 import { searchProductApi } from '../apis/Api'; // Import the search API function
@@ -30,9 +30,7 @@ const Navbar = ({ onSearchResults }) => {
     navigate('/add-to-cart'); // Navigate to the Add to Cart page
   };
 
-  const handleProfileClick = () => {
-    setShowLogout(!showLogout); // Toggle logout button visibility
-  };
+  
 
   const handleLogout = () => {
     // Clear user data from local storage or state
@@ -66,8 +64,8 @@ const Navbar = ({ onSearchResults }) => {
           <div className="icon" onClick={handleCartClick}>
             <FaShoppingCart /> {/* React Icon for cart icon */}
           </div>
-          <div className="icon" onClick={handleProfileClick}>
-            <FaUser /> {/* React Icon for user/profile icon */}
+          <div className="icon" onClick={handleLogout}>
+            <FaDoorOpen /> {/* React Icon for user/profile icon */}
           </div>
         </div>
       </div>
@@ -75,15 +73,9 @@ const Navbar = ({ onSearchResults }) => {
         <div className="logo" >
           <span className="logo-text">Cosmocare</span>
         </div>
-        <div className="menu-items">
-          <div className="makeup">Makeup</div>
-          <div className="skincare">Skincare</div>
-        </div>
-        {showLogout && (
-          <div className="logout-button">
-            <button onClick={handleLogout}>Logout</button>
-          </div>
-        )}
+       
+      
+        
       </div>
     </div>
   );

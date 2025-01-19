@@ -1,69 +1,87 @@
 .wishlist-page {
-    font-family: Arial, sans-serif;
-    background-color: #ffffff; /* White background for the page */
+    font-family: 'Georgia', serif; /* Use a refined, serif font for elegance */
+    background-color: #f8f8f8; /* Soft off-white background for a sophisticated look */
     min-height: 100vh;
-}
-
-.container {
-    padding: 20px;
+    padding-top: 30px;
+  }
+  
+  .container {
+    padding: 30px;
     max-width: 1200px;
     margin: 0 auto;
-}
-
-.page-title {
+  }
+  
+  .page-title {
     text-align: center;
-    margin-bottom: 20px;
-}
-
-.wishlist-items {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    gap: 10px; /* Reduced space between items */
-    overflow-y: auto; /* Allow vertical scrolling */
-    max-height: 65vh; /* Limit height and enable scrolling if needed */
-    align-items: center; /* Center items horizontally */
-}
-
-.wishlist-item {
-    display: flex;
-    align-items: center;
-    border: 2px solid #000000; /* Black border */
-    color: #000000; /* Black text */
-    padding: 10px; /* Reduced padding */
-    border-radius: 5px;
-    margin: 5px 0; /* Reduced vertical margin for spacing */
-    width: 100%;
-    max-width: 800px; /* Maximum width for each item */
-    background-color: #ffffff; /* White background */
-    box-sizing: border-box; /* Include padding and border in width */
-}
-
-.wishlist-image {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    margin-right: 15px; /* Space between image and details */
-}
-
-.wishlist-details {
-    flex: 1; /* Take up remaining space */
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+  }
+  
+  .wishlist-items {
     display: flex;
     flex-direction: column;
-}
-
-.wishlist-item-details h5 {
-    font-weight: bold; /* Make product name bold */
+    gap: 20px; /* Increased space between items */
+    overflow-y: auto;
+    max-height: 65vh;
+    align-items: center;
+  }
+  
+  .wishlist-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #dcdcdc; /* Light gray border for a refined look */
+    padding: 15px;
+    border-radius: 10px;
+    margin: 15px 0; /* Increased spacing for a more spacious design */
+    width: 100%;
+    max-width: 850px;
+    background-color: #fff; /* White background to maintain freshness */
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for an elevated feel */
+  }
+  
+  .wishlist-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 25px;
+  }
+  
+  .wishlist-details {
+    flex: 1;
+    color: #555;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .wishlist-item-details h5 {
+    font-weight: bold;
+    font-size: 20px;
+    color: #333; /* Darker text for product name */
     margin: 0;
-}
-
-.wishlist-item-price {
-    margin: 5px 0; /* Space between price and other elements */
-}
-
-.btn-remove {
+  }
+  
+  .wishlist-item-price {
+    font-size: 18px;
+    color: #b38e56; /* Gold-like color for pricing */
+    margin: 10px 0; /* Add space around the price */
+  }
+  
+  .btn-remove {
     background: transparent;
     border: none;
-    color: #000000; /* Black color */
+    color: #c83b3b; /* Sophisticated red for the remove button */
     cursor: pointer;
-    font-size: 24px; /* Increase size of the remove icon */
-}
+    font-size: 28px; /* Increase size for prominence */
+    transition: color 0.3s ease;
+  }
+  
+  .btn-remove:hover {
+    color: #a52e2e; /* Slightly darker red when hovering */
+  }
+  
