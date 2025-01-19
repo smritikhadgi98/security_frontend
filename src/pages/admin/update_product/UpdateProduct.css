@@ -1,182 +1,145 @@
-/* Global Reset */
+/* Reset default margin and padding for all elements */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Ensures padding and border are included in element's total width and height */
 }
 
-/* Body and HTML Styles */
-body, html {
-    font-family: 'Poppins', sans-serif; /* Sleek, modern sans-serif font */
-    background-color: #f2f2f2;
-    overflow-x: hidden; /* Prevent horizontal scroll */
-}
-
-/* Main Container */
+/* Container Styles */
 .update-product-container {
+    min-height: 100vh; /* Ensure container covers entire viewport height */
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 60px 20px;
-    background: linear-gradient(135deg, #e9e9e9, #f8f8f8); /* Soft gradient for depth */
-    font-family: 'Poppins', sans-serif;
+    justify-content: center;
+    padding: 40px; /* More spacious padding for luxury feel */
+    background-color: #f8f8f8; /* Neutral background for sophistication */
+    font-family: 'Roboto', sans-serif; /* Sleek, clean sans-serif font */
 }
 
-/* Title Styling */
+/* Title Style */
 .update-product-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #1d1d1d;
-    margin-bottom: 50px;
-    text-align: center;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    position: relative;
+    font-size: 3rem; /* Larger, more commanding title */
+    font-weight: 700; /* Bold for emphasis */
+    color: #1d1d1d; /* Darker, sophisticated color */
+    margin-bottom: 35px;
+    text-align: center; /* Center title for balance */
+    letter-spacing: 1px; /* Spacing between letters for a premium feel */
 }
 
-/* Title Underline Effect */
-.update-product-title::after {
-    content: "";
-    position: absolute;
-    width: 80%;
-    height: 4px;
-    background-color: #B69C6D; /* Gold underline for emphasis */
-    bottom: -10px;
-    left: 10%;
-    animation: title-underline 1s ease-out forwards;
-}
-
-@keyframes title-underline {
-    0% {
-        width: 0;
-        opacity: 0;
-    }
-    100% {
-        width: 80%;
-        opacity: 1;
-    }
-}
-
-/* Flex Container for Form */
+/* Flexbox Section for Form */
 .d-flex {
     display: flex;
     gap: 40px;
     width: 100%;
-    justify-content: center;
+    justify-content: center; /* Center content horizontally */
 }
 
 /* Update Product Form Styling */
 .update-product-form {
-    max-width: 550px;
+    max-width: 500px; /* A more compact form for luxury feel */
     width: 100%;
-    background: #ffffff;
-    padding: 50px 40px;
-    border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    position: relative;
-    border: 1px solid #e0e0e0;
-    transition: transform 0.3s ease-in-out;
+    background-color: #fff; /* Clean white background for the form */
+    padding: 40px; /* Increased padding for a more spacious feel */
+    border-radius: 15px; /* More rounded corners for elegance */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Softer and more prominent shadow for a luxurious effect */
+    text-align: left; /* Left align text for a cleaner design */
+    border: 1px solid #e0e0e0; /* Soft border to maintain simplicity */
 }
 
-.update-product-form:hover {
-    transform: translateY(-5px); /* Subtle lift effect */
-}
-
-/* Form Background Animation */
-.update-product-form {
-    background: linear-gradient(135deg, #fff 30%, #f7f7f7 70%);
-}
-
-/* Form Label Styling */
+/* Form Labels */
 .update-product-form label {
     font-weight: 500;
-    color: #666;
+    color: #666; /* Lighter color for labels to keep it subtle */
     margin-top: 18px;
-    font-size: 1.2rem;
-}
-
-/* Input Field Styling */
-.update-product-input {
-    padding: 15px;
-    border: 1px solid #d0d0d0;
-    border-radius: 10px;
-    width: 100%;
-    margin-top: 12px;
     font-size: 1.1rem;
-    color: #333;
-    background-color: #f7f7f7;
-    transition: all 0.3s ease;
 }
 
-/* Input Field Focus Effect */
+/* Input Fields */
+.update-product-input {
+    padding: 14px;
+    border: 1px solid #e0e0e0; /* Light grey border for sophistication */
+    border-radius: 8px;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f7f7f7; /* Subtle background for input */
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Input Fields on Focus */
 .update-product-input:focus {
-    border-color: #B69C6D; /* Gold focus border */
-    box-shadow: 0 0 10px rgba(182, 156, 109, 0.2);
+    border-color: #1d1d1d; /* Dark focus border for subtle emphasis */
+    box-shadow: 0 0 8px rgba(29, 29, 29, 0.2);
     outline: none;
 }
 
-/* Button Styling */
+/* Submit Button */
 .update-product-button {
-    background: linear-gradient(45deg, #B69C6D, #9E7B56); /* Rich gold gradient */
+    background-color: #B69C6D; /* Rich gold color for premium look */
     color: #fff;
-    padding: 16px 32px;
-    border-radius: 50px;
-    width: 100%;
-    font-size: 1.2rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
+    padding: 15px 30px;
+    border-radius: 50px; /* Rounded edges for elegance */
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    margin-top: 30px;
     border: none;
-    margin-top: 35px;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 1.1rem;
 }
 
 /* Button Hover Effect */
 .update-product-button:hover {
-    background: linear-gradient(45deg, #9E7B56, #B69C6D);
-    transform: translateY(-3px); /* Subtle lift effect */
+    background-color: #9E7B56; /* Darker gold for hover effect */
+    transform: translateY(-2px); /* Subtle lift effect */
 }
 
 /* Image Section Styling */
 .image-section {
-    margin-top: 50px;
+    margin-top: 40px;
     text-align: center;
-    position: relative;
 }
 
 .image-section h6 {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 600;
+    margin-bottom: 20px;
     color: #1d1d1d;
-    margin-bottom: 25px;
 }
 
-/* Image Styling with Hover Effects */
+/* Image Styling */
 .image-fluid,
 .img-fluid {
-    max-width: 400px;
     width: 100%;
     height: auto;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
+    max-width: 350px; /* Slightly larger images */
+    border-radius: 10px; /* Rounded corners for images */
+    border: 1px solid #e0e0e0; /* Soft border around images */
     object-fit: cover;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hover Effect on Images */
-.image-fluid:hover {
-    transform: scale(1.05); /* Slight zoom effect */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Deep shadow */
-}
-
-/* Prevent Horizontal Scroll */
+/* Prevent horizontal scrolling */
 body, html {
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Form Background Animation (Optional) */
+.update-product-form {
+    background: linear-gradient(135deg, #fff 30%, #f7f7f7 70%); /* Subtle gradient for depth */
+    animation: pulse 3s infinite alternate;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
 }
