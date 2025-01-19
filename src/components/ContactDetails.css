@@ -6,10 +6,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 12px;
+    border-radius: 0px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
     margin: 0; /* Remove any margin */
-    position: fixed; /* Position at the bottom of the page */
+    
     bottom: 0; /* Ensure it stays at the bottom */
     width: 100%; /* Ensure it spans the full width */
 }
