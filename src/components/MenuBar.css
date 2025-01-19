@@ -1,0 +1,35 @@
+.menu-bar {
+  width: 25%; /* Adjust width as needed */
+  padding-right: 20px;
+}
+
+.menu-options {
+  margin-top: 10px; /* Add margin between Skin Type label and options */
+}
+
+.menu-label {
+  display: block; /* Ensure Skin Type label is block-level */
+  margin-bottom: 10px; /* Space between label and options */
+  white-space: nowrap; /* Prevent line break within label text */
+}
+
+.menu-options ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.menu-options li {
+  margin-bottom: 8px; /* Adjust spacing between radio options */
+  display: flex;
+  align-items: center; /* Center align radio button and label */
+}
+
+.menu-options label {
+  margin-left: 8px; /* Add space between radio button and label */
+  cursor: pointer;
+  white-space: nowrap; /* Prevent line break within label text */
+}
+
+.menu-options input[type="radio"] {
+  margin-right: 5px; /* Space between radio button and label */
+}

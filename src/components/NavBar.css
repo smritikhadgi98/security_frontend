@@ -1,0 +1,204 @@
+/* Original Navbar Styles */
+.navbar {
+    background-color: #8D6E63 !important; /* Ensure higher specificity */
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-bottom {
+    background-color: #EED9C4 !important; /* Ensure higher specificity */
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo img {
+    width: 60px; /* Adjust icon size */
+    height: 60px;/* Adjust size as needed */
+}
+
+.logo-text {
+    font-size: 18px;
+    color: #333; /* Adjust as needed */
+}
+
+.search-bar {
+    flex: 1; /* Takes remaining space */
+    display: flex;
+    justify-content: center;
+}
+
+.search-bar input {
+    width: 70%; /* Adjust width as needed */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.icons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.icon {
+    width: 40px; /* Adjust icon size */
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 24px; /* Ensure font size matches input height */
+    color: black; /* Set icon color to black */
+}
+
+.navbar-bottom .menu-items {
+    display: flex;
+    flex: 1; /* Takes remaining space */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-items .makeup {
+    margin-left: 400px; /* Adjust margin to control spacing */
+}
+
+.menu-items .skincare {
+    margin-right: 400px; /* Adjust margin to control spacing */
+}
+
+.menu-items div {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #333; /* Adjust as needed */
+}
+
+.profile-icon {
+    font-size: 24px;
+    color: black; /* Set profile icon color to black */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .navbar {
+        padding: 15px 10px; /* Reduce padding on smaller screens */
+        flex-direction: column; /* Stack items vertically */
+    }
+
+    .search-bar input {
+        width: 100%; /* Full width on smaller screens */
+    }
+
+    .navbar-bottom {
+        flex-direction: column; /* Stack items vertically */
+        padding: 10px 10px; /* Reduce padding */
+    }
+
+    .menu-items {
+        flex-direction: column; /* Stack menu items vertically */
+        align-items: flex-start; /* Align items to the start */
+    }
+
+    .menu-items .makeup, .menu-items .skincare {
+        margin-left: 0; /* Remove left margin */
+        margin-right: 0; /* Remove right margin */
+        margin-bottom: 10px; /* Add margin between items */
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 5px; /* Further reduce padding */
+    }
+
+    .logo img {
+        width: 50px; /* Adjust logo size */
+        height: 50px; /* Adjust logo size */
+    }
+
+    .logo-text {
+        font-size: 16px; /* Adjust font size */
+    }
+
+    .search-bar input {
+        width: 100%; /* Full width */
+        padding: 8px; /* Adjust padding */
+    }
+
+    .navbar-bottom {
+        padding: 10px 5px; /* Further reduce padding */
+    }
+
+    .icons {
+        gap: 5px; /* Reduce gap */
+    }
+
+    .icon {
+        width: 35px; /* Adjust icon size */
+        height: 35px; /* Adjust icon size */
+        font-size: 20px; /* Adjust font size */
+    }
+
+    .menu-items {
+        flex-direction: column; /* Stack items vertically */
+    }
+
+    .menu-items div {
+        font-size: 14px; /* Adjust font size */
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 10px 5px; /* Further reduce padding */
+    }
+
+    .logo img {
+        width: 40px; /* Adjust logo size */
+        height: 40px; /* Adjust logo size */
+    }
+
+    .logo-text {
+        font-size: 14px; /* Adjust font size */
+    }
+
+    .search-bar input {
+        width: 100%; /* Full width */
+        padding: 6px; /* Adjust padding */
+    }
+
+    .navbar-bottom {
+        padding: 10px 5px; /* Further reduce padding */
+    }
+
+    .icons {
+        gap: 5px; /* Reduce gap */
+    }
+
+    .icon {
+        width: 30px; /* Adjust icon size */
+        height: 30px; /* Adjust icon size */
+        font-size: 18px; /* Adjust font size */
+    }
+
+    .menu-items {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items */
+    }
+
+    .menu-items div {
+        font-size: 12px; /* Adjust font size */
+        margin: 5px 0; /* Margin between items */
+    }
+}
