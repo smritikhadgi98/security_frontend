@@ -1,43 +1,94 @@
+/* Contact Container Styling */
 .contact-container {
-    background-color: #8D6E63;
-    color: black;
-    padding: 20px;
+    background-color: #B69C6D; /* Rich goldish-brown for a luxury feel */
+    color: #fff; /* White text for contrast */
+    padding: 40px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 0px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    margin: 0; /* Remove any margin */
+    
+    bottom: 0; /* Ensure it stays at the bottom */
+    width: 100%; /* Ensure it spans the full width */
 }
-
+/* Contact Content */
 .contact-content {
-    max-width: 600px;
+    max-width: 650px; /* Slightly wider content area */
+    font-family: 'Poppins', sans-serif; /* Modern sans-serif font */
 }
 
+/* Title Style */
 .contact-content h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
+    font-size: 2rem;
+    font-weight: 600; /* Slightly bold for emphasis */
+    color: #fff;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
 }
 
+/* Contact Information Flexbox */
 .contact-info {
     display: flex;
     align-items: center;
 }
 
+/* Left Side Contact Info */
 .contact-left {
     display: flex;
     align-items: center;
+    color: #fff;
 }
 
 .contact-left p {
-    font-size: 1.2rem;
-    margin-left: 10px;
+    font-size: 1.1rem;
+    margin-left: 12px;
+    font-weight: 500;
+    color: #fff; /* White text for contrast */
 }
 
+/* Right Side Contact Info */
 .contact-right {
     display: flex;
     align-items: center;
-    margin-left: 20px;
+    margin-left: 30px;
+    color: #fff;
 }
 
 .contact-right p {
-    font-size: 1.2rem;
-    margin-left: 10px;
+    font-size: 1.1rem;
+    margin-left: 12px;
+    font-weight: 500;
+    color: #fff; /* White text for consistency */
+}
+
+/* Icon Styling (optional, if used for contact info) */
+.contact-left i, .contact-right i {
+    font-size: 1.5rem; /* Larger icons for visual impact */
+    color: #fff; /* White icon color for consistency */
+    transition: transform 0.3s ease; /* Subtle hover effect */
+}
+
+/* Icon Hover Effect */
+.contact-left i:hover, .contact-right i:hover {
+    transform: scale(1.1); /* Slight scale effect for hover interaction */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contact-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .contact-info {
+        flex-direction: column;
+        margin-top: 20px;
+    }
+
+    .contact-right {
+        margin-left: 0;
+        margin-top: 10px;
+    }
 }

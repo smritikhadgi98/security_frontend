@@ -133,6 +133,7 @@ const AdminDashboard = () => {
 
       <div className="admin-dashboard-container">
         <div className="admin-dashboard-sidebar">
+      
           <button
             type="button"
             className="admin-dashboard-button"
@@ -140,7 +141,7 @@ const AdminDashboard = () => {
           >
             Add Product
           </button>
-          <div className="sidebar-buttons">
+        
             <Link to="/admin/view-order">
               <button
                 type="button"
@@ -157,7 +158,8 @@ const AdminDashboard = () => {
               Logout
             </button>
           </div>
-        </div>
+         
+
 
         <div className="admin-dashboard-main">
           <h3 className="admin-dashboard-title">Admin Dashboard</h3>
@@ -169,7 +171,7 @@ const AdminDashboard = () => {
                 <th className="p-3">Product Name</th>
                 <th className="p-3">Product Price</th>
                 <th className="p-3">Product Category</th>
-                <th className="p-3">Skin Type</th>
+          
                 <th className="p-3">Product Description</th>
                 <th className="p-3">Product Quantity</th>
                 <th className="p-3">Actions</th>
@@ -189,7 +191,7 @@ const AdminDashboard = () => {
                   <td className="p-3">{singleProduct.productName}</td>
                   <td className="p-3">{singleProduct.productPrice}</td>
                   <td className="p-3">{singleProduct.productCategory}</td>
-                  <td className="p-3">{singleProduct.productSkinType}</td>
+          
                   <td className="p-3">{singleProduct.productDescription}</td>
                   <td className="p-3">{singleProduct.productQuantity}</td>
                   <td className="p-3">
@@ -246,30 +248,15 @@ const AdminDashboard = () => {
                       className="form-control"
                     >
                       <option value="select-option">Select Options</option>
-                      <option value="Foundation">Foundation</option>
-                      <option value="Concealer">Concealer</option>
-                      <option value="Cleanser">Cleanser</option>
-                      <option value="Blush">Blush</option>
-                      <option value="Moisturizer">Moisturizer</option>
+                      <option value="Anklets">Anklets</option>
+                      <option value="Braclets">Braclets</option>
+                      <option value="Earrings">Earrings</option>
+                      <option value="Necklaces">Necklaces</option>
+                      
                     </select>
                   </div>
 
-                  <div className="modal-form-group">
-                    <label>Skin Type</label>
-                    <select
-                      value={productSkinType}
-                      onChange={(e) => setProductSkinType(e.target.value)}
-                      className="form-control"
-                    >
-                      <option value="select-option">Select Options</option>
-                      <option value="Normal">Normal Skin</option>
-                      <option value="Dry">Dry Skin</option>
-                      <option value="Oily">Oily Skin</option>
-                      <option value="Combination">Combination Skin</option>
-                      <option value="Acne Prone">Acne Prone Skin</option>
-                    </select>
-                  </div>
-
+                  
                   <div className="modal-form-group">
                     <label>Product Description</label>
                     <textarea

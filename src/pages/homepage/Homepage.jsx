@@ -12,7 +12,7 @@ const Homepage = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedSkinType, setSelectedSkinType] = useState('');
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -20,8 +20,8 @@ const Homepage = () => {
       setLoading(true);
 
       try {
-        const response = selectedCategory || selectedSkinType
-          ? await filterProductsApi(selectedCategory, selectedSkinType)
+        const response = selectedCategory 
+          ? await filterProductsApi(selectedCategory)
           : await getPaginatedProductsApi(page);
 
         if (response.data) {
@@ -36,7 +36,7 @@ const Homepage = () => {
     };
 
     fetchProducts();
-  }, [page, selectedCategory, selectedSkinType]);
+  }, [page, selectedCategory]);
 
   const handleCategoryChange = (newCategory) => {
     setSelectedCategory(newCategory);
@@ -44,11 +44,7 @@ const Homepage = () => {
     setProducts([]); // Reset products to avoid duplication
   };
 
-  const handleSkinTypeChange = (newSkinType) => {
-    setSelectedSkinType(newSkinType);
-    setPage(1);
-    setProducts([]); // Reset products to avoid duplication
-  };
+  
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -81,7 +77,7 @@ const Homepage = () => {
         <div className="menu-bar-container">
           <MenuBar
             onCategoryChange={handleCategoryChange}
-            onSkinTypeChange={handleSkinTypeChange}
+          
           />
         </div>
         <div className="product-grid">

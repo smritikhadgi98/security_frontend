@@ -15,7 +15,6 @@ const UpdateProduct = () => {
   const [productCategory, setProductCategory] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [productQuantity, setProductQuantity] = useState('');
-  const [productSkinType, setProductSkinType] = useState('');
   const [productNewImage, setProductNewImage] = useState(null);
   const [previewNewImage, setPreviewNewImage] = useState(null);
   const [oldImage, setOldImage] = useState('');
@@ -27,7 +26,7 @@ const UpdateProduct = () => {
         setProductName(product.productName);
         setProductPrice(product.productPrice);
         setProductCategory(product.productCategory);
-        setProductSkinType(product.productSkinType);
+      
         setProductDescription(product.productDescription);
         setProductQuantity(product.productQuantity);
         setOldImage(product.productImage);
@@ -50,7 +49,7 @@ const UpdateProduct = () => {
     formData.append('productName', productName);
     formData.append('productPrice', productPrice);
     formData.append('productCategory', productCategory);
-    formData.append('productSkinType', productSkinType);
+  
     formData.append('productDescription', productDescription);
     formData.append('productQuantity', productQuantity);
     if (productNewImage) {
@@ -116,30 +115,13 @@ const UpdateProduct = () => {
             className="update-product-input"
           >
             <option value="select-option">Select Options</option>
-            <option value="Foundation">Foundation</option>
-            <option value="Concealer">Concealer</option>
-            <option value="Cleanser">Cleanser</option>
-            <option value="Blush">Blush</option>
-            <option value="Moisturizer">Moisturizer</option>
+            <option value="Anklets">Anklets</option>
+                      <option value="Braclets">Braclets</option>
+                      <option value="Earrings">Earrings</option>
+                      <option value="Necklaces">Necklacesr</option>
           </select>
 
-          <label htmlFor="productSkinType" className="mt-2">
-            Choose skin type
-          </label>
-          <select
-            id="productSkinType"
-            value={productSkinType}
-            onChange={(e) => setProductSkinType(e.target.value)}
-            className="update-product-input"
-          >
-            <option value="select-option">Select Options</option>
-            <option value="Normal">Normal Skin</option>
-            <option value="Dry">Dry Skin</option>
-            <option value="Oily">Oily Skin</option>
-            <option value="Combination">Combination Skin</option>
-            <option value="Acne Prone">Acne Prone Skin</option>
-          </select>
-
+          
           <label htmlFor="productDescription" className="mt-2">
             Enter description
           </label>
