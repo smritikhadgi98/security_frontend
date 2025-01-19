@@ -13,7 +13,7 @@ const AdminDashboard = () => {
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productCategory, setProductCategory] = useState('');
-  const [productSkinType, setProductSkinType] = useState('');
+
   const [productDescription, setProductDescription] = useState('');
   const [productImage, setProductImage] = useState(null);
   const [productQuantity, setProductQuantity] = useState('');
@@ -43,7 +43,7 @@ const AdminDashboard = () => {
       !productName ||
       !productPrice ||
       !productCategory ||
-      !productSkinType ||
+
       !productDescription ||
       !productImage ||
       !productQuantity
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
     formData.append('productName', productName);
     formData.append('productPrice', productPrice);
     formData.append('productCategory', productCategory);
-    formData.append('productSkinType', productSkinType);
+
     formData.append('productDescription', productDescription);
     formData.append('productQuantity', productQuantity);
     formData.append('productImage', productImage);
@@ -72,7 +72,7 @@ const AdminDashboard = () => {
           setProductName('');
           setProductPrice('');
           setProductCategory('');
-          setProductSkinType('');
+   
           setProductDescription('');
           setProductQuantity('');
           setProductImage(null);

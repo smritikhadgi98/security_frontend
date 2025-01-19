@@ -1,54 +1,67 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* --- Global Styles --- */
 body {
-  @apply bg-[#f4f0e6] font-['Playfair_Display',serif];
+  @apply bg-[#f8f4e3] font-serif; /* Soft background color for a luxury feel */
 }
 
-/* --- Admin Dashboard --- */
+/* --- Admin Dashboard Container --- */
 .admin-dashboard-container {
-  @apply min-h-screen flex bg-[#f8f4f0];
+  @apply min-h-[calc(100vh-64px)] flex bg-[#f9f4f0]; /* Soft beige background for luxury feel */
 }
 
+/* --- Sidebar --- */
 .admin-dashboard-sidebar {
-  @apply w-[240px] p-8 bg-gradient-to-b from-[#c9b197] to-[#9c8c74] text-white border-r border-[#d1c8b7] shadow-xl;
+  @apply w-[240px] p-6 bg-gradient-to-r from-[#f9c4d2] to-[#c9a77d] text-white border-r border-[#d1c8b7] shadow-xl;
 }
 
+/* Sidebar link text styling */
 .admin-dashboard-sidebar a {
-  @apply block text-lg font-semibold mb-5 transition hover:text-[#f7e4b3];
+  @apply block text-lg font-semibold mb-5 text-[#f7f1e1] transition hover:text-[#f7e4b3];
 }
 
-.admin-dashboard-main {
-  @apply flex-1 p-8 bg-white shadow-lg rounded-xl;
-}
-
-.admin-dashboard-title {
-  @apply text-4xl font-semibold text-[#4a3c27] mb-6;
-}
-
-/* --- Buttons --- */
+/* Sidebar button background and hover styling */
 .admin-dashboard-button {
-  @apply bg-gradient-to-r from-[#a38b63] to-[#8e7037] text-white py-3 px-8 rounded-full cursor-pointer transition duration-300 shadow-lg;
-  border: 2px solid #8e7037;
+  @apply bg-gradient-to-r from-[#e3a79e] to-[#d77c81] text-white py-2 px-6 rounded-full cursor-pointer transition duration-300 shadow-lg border-none;
 }
 
 .admin-dashboard-button:hover {
-  @apply bg-gradient-to-l from-[#a38b63] to-[#8e7037] scale-105 shadow-2xl;
+  @apply bg-gradient-to-l from-[#d77c81] to-[#e3a79e] scale-105 shadow-xl;
+}
+
+/* Sidebar button hover adjustments */
+.admin-dashboard-sidebar a:hover {
+  @apply text-[#c9a77d] bg-[#f7e4b3]; /* Lighter background and darker text color on hover */
+}
+
+.admin-dashboard-sidebar a:focus {
+  @apply text-[#f7e4b3] bg-[#d77c81]; /* Focused state with clear contrast */
+}
+
+/* --- Sidebar Buttons --- */
+.sidebar-buttons {
+  @apply flex flex-col gap-4; /* Ensuring buttons don't overlap and have proper spacing */
+}
+
+/* --- Main Content Area --- */
+.admin-dashboard-main {
+  @apply flex-1 p-6 bg-white rounded-lg shadow-lg;
+}
+
+/* --- Title --- */
+.admin-dashboard-title {
+  @apply text-3xl font-bold text-[#4a3c27] mb-6;
 }
 
 /* --- Table --- */
 .admin-dashboard-table {
-  @apply w-full mt-8 border-collapse rounded-lg overflow-hidden shadow-md bg-[#faf2e4];
+  @apply w-full mt-6 border-collapse rounded-lg overflow-hidden shadow-md bg-[#faf2e4];
 }
 
 .admin-dashboard-table th {
-  @apply bg-[#9c8c74] text-white text-lg font-semibold p-5 uppercase tracking-wide;
+  @apply bg-[#c9a77d] text-white text-lg font-semibold p-5 uppercase tracking-wide;
 }
 
 .admin-dashboard-table td {
-  @apply p-4 border border-[#e0d5b0] text-[#4a3c27] text-lg;
+  @apply p-5 border border-[#e0d5b0] text-[#4a3c27] text-lg;
 }
 
 .admin-dashboard-table tr:nth-child(even) {
@@ -59,76 +72,86 @@ body {
   @apply bg-[#f7f1e6];
 }
 
-/* --- Navbar --- */
+/* --- Product Image Styling --- */
+.admin-dashboard-table img {
+  @apply w-[120px] h-[80px] object-cover rounded-md shadow-md;
+}
+
+/* --- Modal Styling --- */
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center;
+}
+
+.modal-content {
+  @apply p-8 rounded-lg shadow-lg max-w-3xl w-full overflow-y-auto;
+  max-height: 80vh;
+  background-color: #fef9e4; /* Soft goldish background for elegance */
+}
+
+.modal-header {
+  @apply flex justify-between items-center mb-4;
+}
+
+.modal-title {
+  @apply text-[#4a3c27] text-2xl font-semibold;
+}
+
+.modal-body {
+  @apply flex flex-col gap-6;
+}
+
+.modal-form-group {
+  @apply flex flex-col gap-2;
+}
+
+.modal-form-group label {
+  @apply text-[#4a3c27] font-bold;
+}
+
+.modal-form-group input,
+.modal-form-group select,
+.modal-form-group textarea {
+  @apply p-3 rounded-md border border-[#8e7037] w-full focus:outline-none focus:ring-2 focus:ring-[#d77c81];
+}
+
+.modal-footer {
+  @apply flex justify-end gap-4 mt-6;
+}
+
+.modal-footer button {
+  @apply bg-[#c9a77d] text-white py-2 px-6 rounded-full border border-[#8e7037] transition duration-300;
+}
+
+.modal-footer button:hover {
+  @apply bg-[#b77c68] scale-105;
+}
+
+/* --- Navbar Styling --- */
 .admin-navbar {
-  @apply flex justify-between items-center h-20 bg-gradient-to-r from-[#c9b197] to-[#9c8c74] px-8 border-b border-[#d1c8b7] shadow-md;
+  @apply flex justify-between items-center h-16 bg-gradient-to-r from-[#f9c4d2] to-[#c9a77d] px-8 border-b border-[#d1c8b7] shadow-md;
 }
 
 .admin-navbar-logo {
-  @apply text-5xl font-semibold text-white;
+  @apply text-4xl font-semibold text-white;
 }
 
 .logo {
-  @apply w-28;
+  @apply w-28; /* Adjusted width for logo */
 }
 
 .admin-navbar-right {
   @apply flex items-center;
 }
 
-.logout-button {
-  @apply bg-[#b25b5b] text-white py-3 px-6 rounded-full transition duration-300 shadow-md;
-}
-
-.logout-button:hover {
-  @apply bg-[#9b4e4e] scale-105;
-}
-
-/* --- Modal --- */
-.modal-overlay {
-  @apply fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center;
-}
-
-.modal-content {
-  @apply p-12 rounded-xl shadow-2xl max-w-4xl w-full overflow-y-auto;
-  background: linear-gradient(to bottom, #fef9e4, #f5e0b3);
-}
-
-.modal-title {
-  @apply text-[#4a3c27] text-3xl font-semibold mb-6;
-}
-
-.modal-form-group label {
-  @apply text-[#4a3c27] font-bold text-lg;
-}
-
-.modal-form-group input,
-.modal-form-group select,
-.modal-form-group textarea {
-  @apply p-5 rounded-md border border-[#8e7037] w-full focus:outline-none focus:ring-2 focus:ring-[#a38b63];
-}
-
-.modal-footer {
-  @apply flex justify-end gap-6 mt-6;
-}
-
-.modal-footer button {
-  @apply bg-[#9c8c74] text-white py-3 px-8 rounded-full border border-[#d1c8b7] transition duration-300;
-}
-
-.modal-footer button:hover {
-  @apply bg-[#8e7037] scale-105;
-}
-
 /* --- Action Buttons --- */
 .action-cell {
-  @apply flex items-center justify-center gap-6;
+  @apply flex items-center justify-center gap-5;
 }
 
 .action-button {
-  @apply text-[#8e7037] text-xl transition-colors duration-300;
+  @apply text-[#8e7037] text-lg transition-colors duration-300;
 }
 
 .action-button:hover {
-  @apply text-[#a38b63] scale-110;
+  @apply text-[#f06292];
 }
