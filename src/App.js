@@ -24,7 +24,7 @@ function App() {
       <Routes>
         <Route path='/' element={<BoardingPage />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login />} />
+        <Route path='/login' element={<Login />} />z
 
         <Route element={<AdminRoutes />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />

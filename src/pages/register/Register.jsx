@@ -42,11 +42,17 @@ function Register() {
       setPhoneError('');
     }
 
+    // Password validation for required field
     if (!password.trim()) {
       setPasswordError('Password is required');
       isValid = false;
     } else {
       setPasswordError('');
+      // Password strength validation (shown in toast only)
+      if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        toast.error("Password must be at least 8 characters long, contain both uppercase and lowercase letters, and include a special character.", { position: "top-right" });
+        isValid = false;
+      }
     }
 
     if (!confirmPassword.trim()) {
@@ -66,7 +72,6 @@ function Register() {
     e.preventDefault();
 
     if (!validateForm()) {
-      // Stop form submission if validation fails
       return;
     }
 
@@ -80,7 +85,6 @@ function Register() {
     registerUserApi(data)
       .then((response) => {
         toast.success('Registration successful! Please login to continue.');
-        // Optionally clear form fields after successful registration
         setUsername('');
         setEmail('');
         setPassword('');
