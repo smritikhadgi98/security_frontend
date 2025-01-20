@@ -163,7 +163,7 @@ const UpdateProduct = () => {
           <h6>Previewing old image</h6>
           <img
             className="image-fluid rounded-4 object-fit-cover"
-            src={`http://localhost:5000/products/${oldImage}`}
+            src={`https://localhost:5000/products/${oldImage}`}
             alt="Old Product"
           />
 

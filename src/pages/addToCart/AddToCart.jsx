@@ -89,7 +89,7 @@ const AddToCart = () => {
                 item.productId ? (
                   <div key={item._id} className="cart-item">
                     <img
-                      src={`http://localhost:5000/products/${item.productId.productImage}`}
+                      src={`https://localhost:5000/products/${item.productId.productImage}`}
                       alt={item.productId.productName}
                       className="cart-item-image"
                     />

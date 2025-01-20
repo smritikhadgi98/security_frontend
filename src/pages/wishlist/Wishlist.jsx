@@ -73,7 +73,7 @@ const WishlistPage = () => {
                         {wishlistItems.map(item => (
                             <div key={item._id} className="wishlist-item">
                                 <img
-                                    src={`http://localhost:5000/products/${item.productImage}`}
+                                    src={`https://localhost:5000/products/${item.productImage}`}
                                     alt={item.productName}
                                     className="wishlist-image"
                                 />

@@ -77,17 +77,20 @@ body {
 }
 
 
+/* Modal Styling */
 .modal-overlay {
   @apply fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center;
 }
 
 .modal-content {
-  @apply p-12 rounded-xl shadow-2xl max-w-4xl w-full overflow-y-auto;
-  background: linear-gradient(to bottom, #fef9e4, #f5e0b3);
+  @apply p-6 rounded-xl shadow-2xl max-w-lg w-full overflow-y-auto;
+  background: linear-gradient(to bottom, #fef9e4, #f5e0b3); /* Light gradient background */
+  max-height: 80vh; /* Limit the height */
+  overflow-y: auto; /* Enable scrolling if content overflows */
 }
 
 .modal-title {
-  @apply text-[#4a3c27] text-3xl font-semibold mb-6;
+  @apply text-[#4a3c27] text-2xl font-semibold mb-4; /* Reduced font size and margin */
 }
 
 .modal-form-group label {
@@ -97,20 +100,42 @@ body {
 .modal-form-group input,
 .modal-form-group select,
 .modal-form-group textarea {
-  @apply p-5 rounded-md border border-[#8e7037] w-full focus:outline-none focus:ring-2 focus:ring-[#a38b63];
+  @apply p-4 rounded-md border border-[#8e7037] w-full focus:outline-none focus:ring-2 focus:ring-[#a38b63];
+  max-width: 100%; /* Prevent overflow */
+}
+
+.modal-footer {
+  @apply flex justify-end gap-4 mt-4; /* Adjust spacing between buttons */
+}
+
+.modal-footer button {
+  @apply bg-[#9c8c74] text-white py-2 px-6 rounded-full border border-[#d1c8b7] transition duration-300;
+}
+
+.modal-footer button:hover {
+  @apply bg-[#8e7037] scale-105;
+}
+
+/* Make sure the modal body fits within the screen */
+.modal-body {
+  @apply flex flex-col gap-4;
+}
+
+/* Adjust the form groups */
+.modal-form-group {
+  @apply flex flex-col gap-3; /* Reduce spacing between fields */
+}
+
+.modal-form-group input,
+.modal-form-group select,
+.modal-form-group textarea {
+  @apply py-3 px-4; /* Adjust input padding */
 }
 
 .modal-footer {
   @apply flex justify-end gap-6 mt-6;
 }
 
-.modal-footer button {
-  @apply bg-[#9c8c74] text-white py-3 px-8 rounded-full border border-[#d1c8b7] transition duration-300;
-}
-
-.modal-footer button:hover {
-  @apply bg-[#8e7037] scale-105;
-}
 
 /* --- Action Buttons --- */
 .action-cell {

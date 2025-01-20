@@ -1,29 +1,37 @@
 @import url('https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/tailwind.min.css');
 
 .register-container {
-    @apply min-h-screen flex items-center justify-center relative;
-    background-image: url('../../assets/images/register.gif');
-    background-size: 100% 100%; /* Cover the entire container */
-    background-repeat: no-repeat;
-  }
-  
-.register-box {
-  @apply flex flex-col md:flex-row w-full max-w-6xl bg-white rounded-2xl shadow-lg overflow-hidden;
+  @apply min-h-screen flex items-center justify-center relative bg-cover bg-no-repeat;
+  background-image: url('../../assets/images/register.webp');
+  background-size: cover;
+  background-blend-mode: overlay;
+  background-color: rgba(0, 0, 0, 0.5); /* Subtle overlay for better readability */
+  height: 100vh; /* Ensure full viewport height */
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+}
 
+.register-box {
+  @apply flex flex-col md:flex-row w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-200;
 }
 
 .register-form {
-    @apply w-full md:w-1/3 p-8 flex flex-col justify-center; /* Reduced padding */
-    background-color: #F9C4D2;
-  }
-  
+  @apply w-full md:w-1/3 p-10 flex flex-col justify-center;
+  background-color: #FDE8E9; /* Soft pink background for elegance */
+  font-family: 'Roboto', sans-serif; /* Modern, clean font */
+}
 
 .register-title {
-  @apply text-4xl font-bold text-gray-800 mb-4;
+  @apply text-4xl font-bold text-gray-900 mb-6;
+  font-family: 'Playfair Display', serif; /* Luxurious serif font for a premium look */
 }
 
 .register-subtitle {
-  @apply text-sm text-gray-600 mb-6;
+  @apply text-base text-gray-700 mb-8 leading-relaxed;
 }
 
 .register-fields {
@@ -31,36 +39,40 @@
 }
 
 .register-input {
-  @apply p-3 rounded-full border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-pink-400;
+  @apply p-4 rounded-lg border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-pink-400;
+  background-color: #FFF8F3; /* Creamy background for sophistication */
 }
 
 .register-button {
-  @apply rounded-full py-3 mt-6 hover:bg-pink-300 transition duration-300;
-  background-color: #EED9C4;
-  color: black;
-  border: 2px solid black;
+  @apply rounded-lg py-3 mt-6 font-semibold uppercase hover:bg-gradient-to-r hover:from-pink-500 hover:to-pink-400 transition duration-300 ease-in-out;
+  background: linear-gradient(90deg, #D4AF37, #FFD700); /* Luxurious gold gradient */
+  color: white;
+  border: none;
+}
+
+.register-button:hover {
+  @apply transform scale-105;
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2); /* Adds depth and interactivity */
 }
 
 .login-link {
-  @apply mt-4 text-sm text-gray-600;
+  @apply mt-6 text-sm text-gray-600 hover:text-gray-900 transition duration-300 ease-in-out;
 }
 
 .register-images {
-  @apply w-full md:w-2/3 p-8 flex flex-col gap-4 justify-center items-center bg-pink-50;
+  @apply w-full md:w-2/3 p-10 flex flex-col gap-6 justify-center items-center bg-gradient-to-b from-pink-100 to-pink-50;
 }
 
 .register-image {
-  @apply w-full h-full rounded-lg object-cover shadow-md;
+  @apply w-full h-full rounded-xl overflow-hidden shadow-lg;
 }
 
 .register-image img {
-  @apply w-full h-full rounded-lg;
-  /* width: 100%; */
-  
+  @apply w-full h-full object-cover rounded-xl;
 }
 
 .text-black {
-  color: black;
+  color: #333333; /* Subtle black for an elegant tone */
 }
 
 .input-container {
@@ -69,8 +81,8 @@
 
 .error-message {
   position: absolute;
-  top: -30px; /* Adjust as needed */
+  top: -30px; /* Adjusted for better positioning */
   left: 0;
-  color: red;
+  color: #FF6B6B; /* Soft red for error messages */
   font-size: 14px;
 }

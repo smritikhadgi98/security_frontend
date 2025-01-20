@@ -1,7 +1,7 @@
 import React from 'react';
 import './MenuBar.css'; 
 
-const MenuBar = ({ onCategoryChange, onSkinTypeChange }) => {
+const MenuBar = ({ onCategoryChange, }) => {
   const handleCategoryChange = (event) => {
     const category = event.target.value;
     onCategoryChange(category); // Pass selected category back to parent

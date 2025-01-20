@@ -200,7 +200,7 @@ const ProductDetails = () => {
             </div>
           </div>
 
-            <img src={`http://localhost:5000/products/${product.productImage}`} alt={product.productName} className="product-image-container" />
+            <img src={`https://localhost:5000/products/${product.productImage}`} alt={product.productName} className="product-image-container" />
         </div>
         <div className="related-products">
           <h2>Related Products</h2>
@@ -209,7 +209,7 @@ const ProductDetails = () => {
             <div className="related-products-list" ref={carouselRef}>
               {relatedProducts.map((relatedProduct) => (
                 <div key={relatedProduct._id} className="related-product-item">
-                  <img src={`http://localhost:5000/products/${relatedProduct.productImage}`} alt={relatedProduct.productName} />
+                  <img src={`https://localhost:5000/products/${relatedProduct.productImage}`} alt={relatedProduct.productName} />
                   <h5>NPR {relatedProduct.productPrice}</h5>
                   <p>{relatedProduct.productName}</p>
                   <div className="button-group">

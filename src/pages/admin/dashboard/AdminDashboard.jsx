@@ -182,7 +182,7 @@ const AdminDashboard = () => {
                 <tr key={singleProduct._id} className="bg-white hover:bg-gray-100">
                   <td className="p-3">
                     <img
-                      src={`http://localhost:5000/products/${singleProduct.productImage}`}
+                      src={`https://localhost:5000/products/${singleProduct.productImage}`}
                       alt={singleProduct.productName}
                       onError={(e) => { e.target.src = '/path/to/placeholder-image.jpg'; }}
                       className="w-24 h-12 object-cover rounded-md"

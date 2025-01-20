@@ -104,7 +104,7 @@ const ProductCard = ({ productInformation, color }) => {
           onClick={handleFavoriteClick}
         />
         <img
-          src={`http://localhost:5000/products/${productInformation.productImage}`}
+          src={`https://localhost:5000/products/${productInformation.productImage}`}
           className="card-img-top"
           alt={productInformation.productName}
         />
