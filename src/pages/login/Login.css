@@ -94,3 +94,73 @@
 .forgot-password-link {
   @apply text-sm text-black hover:text-blue-300 font-medium;
 }
+.otp-modal {
+  width: 400px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.otp-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.otp-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.otp-modal input {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.otp-modal button {
+  margin-top: 10px;
+}
+
+
+/* For modal centering and background blur */
+
+.otp-modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  z-index: 1000;
+}
+
+.otp-modal {
+  width: 400px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: scale-up 0.3s ease-in-out;
+}
+
+@keyframes scale-up {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.error-message {
+  color: #FF6B6B; /* Soft red */
+  font-size: 14px;
+  margin-top: -5px;
+}

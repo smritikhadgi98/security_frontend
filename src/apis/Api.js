@@ -41,6 +41,18 @@ export const forgotPasswordApi = (data) =>
   // verify otp
   export const verifyOtpApi = (data) => Api.post("/api/user/verify_otp", data);
 
+
+  export const verifyRegisterOtpApi = (data) =>
+    Api.post("/api/user/verify_register_otp", data);
+   
+  // Resend Registration OTP
+  export const resendLoginOtpApi = (data) =>
+    Api.post("/api/user/resend_login_otp", data);
+   
+  // Verify Login OTP
+  export const loginOTPApi = (data) =>
+    Api.post("/api/user/verify_login_otp", data);
+
 // Create product API
 export const createProductApi = (data) => Api.post("/api/product/create", data, getConfig());
 
