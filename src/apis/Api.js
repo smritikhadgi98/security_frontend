@@ -34,6 +34,13 @@ export const registerUserApi = (data) => Api.post('/api/user/create', data);
 // Login API
 export const loginUserApi = (data) => Api.post('/api/user/login', data);
 
+//forgot password
+export const forgotPasswordApi = (data) =>
+    Api.post("/api/user/forgot_password", data);
+   
+  // verify otp
+  export const verifyOtpApi = (data) => Api.post("/api/user/verify_otp", data);
+
 // Create product API
 export const createProductApi = (data) => Api.post("/api/product/create", data, getConfig());
 

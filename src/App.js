@@ -16,6 +16,7 @@ import AddToCart from './pages/addToCart/AddToCart';
 import Wishlist from './pages/wishlist/Wishlist';
 import PlaceOrder from './pages/order/PlaceOrder';
 import ViewOrder from './pages/admin/view_order/ViewOrder';
+import ForgetPassword from './forgetpassword/ForgetPassword';
 
 function App() {
   return (
@@ -24,8 +25,9 @@ function App() {
       <Routes>
         <Route path='/' element={<BoardingPage />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login />} />z
-
+        <Route path='/login' element={<Login />} />
+       
+       
         <Route element={<AdminRoutes />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path='/admin/update/:id' element={<UpdateProduct />} />
@@ -40,6 +42,7 @@ function App() {
           <Route path="/placeorder" element={<PlaceOrder />} />
 
         </Route>
+        <Route path='/forgotpassword' element={<ForgetPassword/>} />
       </Routes>
     </Router>
   );

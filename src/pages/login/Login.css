@@ -1,5 +1,4 @@
-@import url('https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/tailwind.min.css');
-
+/* Existing styles for the login container, box, and form */
 .login-container {
   @apply min-h-screen flex items-center justify-center relative bg-cover bg-no-repeat;
   background-image: url('../../assets/images/register.webp');
@@ -63,13 +62,14 @@
 }
 
 .login-image {
-  @apply w-full h-72 rounded-xl overflow-hidden shadow-md;
+  @apply w-full h-full rounded-xl overflow-hidden shadow-md; /* Increased height to 128 */
 }
 
 .login-image img {
   @apply w-full h-full object-cover rounded-xl;
 }
 
+/* Additional styles for error message */
 .text-black {
   color: #333333; /* Softer black for luxury feel */
 }
@@ -84,4 +84,13 @@
   left: 0;
   color: #FF6B6B; /* Elegant soft red */
   font-size: 14px;
+}
+
+/* New styles to move Forgot Password? link to the right */
+.forgot-password-container {
+  @apply flex justify-end w-full mt-2; /* Use flex to push to the right */
+}
+
+.forgot-password-link {
+  @apply text-sm text-black hover:text-blue-300 font-medium;
 }
