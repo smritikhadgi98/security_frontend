@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { registerUserApi, verifyRegisterOtpApi } from '../../apis/Api';
 import registerui from '../../assets/images/login.webp';
 import zxcvbn from 'zxcvbn'; // Import zxcvbn for password strength checking
+import DOMPurify from 'dompurify'; // Import dompurify for input sanitization
 import './Register.css';
 
 function Register() {
@@ -94,14 +95,15 @@ function Register() {
       return;
     }
 
-    const data = {
-      userName: userName,
-      email: email,
-      password: password,
-      phone: phone
+    // Sanitize inputs to prevent HTML injection
+    const sanitizedData = {
+      userName: DOMPurify.sanitize(userName),
+      email: DOMPurify.sanitize(email),
+      password: DOMPurify.sanitize(password),
+      phone: DOMPurify.sanitize(phone)
     };
 
-    registerUserApi(data)
+    registerUserApi(sanitizedData)
       .then((response) => {
         toast.success('Registration successful! Please verify your email.');
         setIsOtpSent(true); // OTP sent after successful registration
@@ -123,9 +125,11 @@ function Register() {
       return;
     }
 
+    const sanitizedOtp = DOMPurify.sanitize(otp); // Sanitize OTP input
+
     const data = {
-      email: email,
-      otp: otp
+      email: DOMPurify.sanitize(email),
+      otp: sanitizedOtp
     };
 
     verifyRegisterOtpApi(data)

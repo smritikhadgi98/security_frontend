@@ -11,13 +11,16 @@ const Api = axios.create({
 
 // Function to get the config with token
 const getConfig = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Authorization token is missing');
+    }
     return {
-        headers: {
-            authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
     };
-};
-
+  };
 const jsonConfig = {
     headers: {
         authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -130,11 +133,16 @@ export const removeFromCartApi = (id) => Api.delete(`/api/cart/remove_from_cart/
 export const updateCartStatusApi = (data) => Api.put("/api/cart/update_status", data, getConfig());
 
 // Wishlist APIs
-export const addToWishlistApi = (userId, productId) => Api.post('/api/wishlist/add', { userId, productId }, getConfig());
+export const addToWishlistApi = (data) => Api.post("/api/wishlist/add",data, getConfig());
 
-export const getWishlistItemsApi = (userId) => Api.get(`/api/wishlist/${userId}`, getConfig());
+export const getWishlistItemsApi = () => Api.get("/api/wishlist/get_wishlist", getConfig());
 
-export const removeFromWishlistApi = (userId, productId) => Api.post('/api/wishlist/remove', { userId, productId }, getConfig());
+export const removeFromWishlistApi = (productId, wishlistItemId) => {
+    return Api.post("/api/wishlist/remove", { 
+      id: productId, 
+      itemId: wishlistItemId 
+    }, getConfig());
+  };
 
 //=========================== Review Apis ===========================
 

@@ -16,6 +16,7 @@ import AddToCart from './pages/addToCart/AddToCart';
 import Wishlist from './pages/wishlist/Wishlist';
 import PlaceOrder from './pages/order/PlaceOrder';
 import ViewOrder from './pages/admin/view_order/ViewOrder';
+import EditProfile from './pages/EditProfile/EditProfile';
 import ForgetPassword from './forgetpassword/ForgetPassword';
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <Route path="/add-to-cart" element={<AddToCart />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/placeorder" element={<PlaceOrder />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
 
         </Route>
         <Route path='/forgotpassword' element={<ForgetPassword/>} />

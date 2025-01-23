@@ -30,7 +30,9 @@ const Navbar = ({ onSearchResults }) => {
     navigate('/add-to-cart'); // Navigate to the Add to Cart page
   };
 
-  
+  const handleClick = () => {
+    navigate('/edit-profile'); // Navigate to the Add to Cart page
+  };
 
   const handleLogout = () => {
     // Clear user data from local storage or state
@@ -64,14 +66,14 @@ const Navbar = ({ onSearchResults }) => {
           <div className="icon" onClick={handleCartClick}>
             <FaShoppingCart /> {/* React Icon for cart icon */}
           </div>
-          <div className="icon" onClick={handleLogout}>
+          <div className="icon" onClick={handleClick}>
             <FaDoorOpen /> {/* React Icon for user/profile icon */}
           </div>
         </div>
       </div>
       <div className="navbar-bottom">
         <div className="logo" >
-          <span className="logo-text">Cosmocare</span>
+          <span className="logo-text">SparkleNest</span>
         </div>
        
       

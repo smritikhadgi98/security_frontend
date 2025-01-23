@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { FaHeart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { addToCartApi, addToWishlistApi, getCartApi, getWishlistItemsApi, removeFromWishlistApi } from '../apis/Api';
+import {
+  addToCartApi,
+  addToWishlistApi,
+  getCartApi,
+  getWishlistItemsApi,
+  removeFromWishlistApi,
+} from '../apis/Api';
 import './ProductCard.css';
 
 const ProductCard = ({ productInformation, color }) => {
@@ -13,21 +19,24 @@ const ProductCard = ({ productInformation, color }) => {
   useEffect(() => {
     const checkIfFavorited = async () => {
       try {
-        const response = await getWishlistItemsApi(userId);
-        console.log('Wishlist API Response:', response); // Debug response
-        if (response.data && response.data.wishlist) {
-          setIsFavorited(response.data.wishlist.some(item => item._id === productInformation._id));
+        if (!userId) return;
+        
+        const response = await getWishlistItemsApi();
+        if (response.data && response.data.products) {
+          const isProductInWishlist = response.data.products.some(
+            (item) => item.productId && item.productId._id === productInformation._id
+          );
+          setIsFavorited(isProductInWishlist);
         }
       } catch (error) {
         console.error('Error checking wishlist:', error);
       }
     };
-
-    if (userId) {
-      checkIfFavorited();
-    }
+  
+    checkIfFavorited();
   }, [userId, productInformation._id]);
 
+  
   const handleViewMore = () => {
     navigate(`/product/${productInformation._id}`);
   };
@@ -41,15 +50,20 @@ const ProductCard = ({ productInformation, color }) => {
     try {
       const cartResponse = await getCartApi();
       console.log('Cart API Response:', cartResponse); // Debug response
-      const cartItems = cartResponse.data && cartResponse.data.cartItems ? cartResponse.data.cartItems : [];
-      const productInCart = cartItems.some(item => item.product && item.product._id === productInformation._id);
+      const cartItems = cartResponse.data?.cartItems || [];
+      const productInCart = cartItems.some(
+        (item) => item.product._id === productInformation._id
+      );
 
       if (productInCart) {
         toast.error('Product is already in cart');
         return;
       }
 
-      const addResponse = await addToCartApi({ productId: productInformation._id, quantity: 1 }); // Assuming quantity is 1
+      const addResponse = await addToCartApi({
+        productId: productInformation._id,
+        quantity: 1,
+      }); // Assuming quantity is 1
       if (addResponse.data.success) {
         toast.success('Product added to cart');
       } else {
@@ -66,12 +80,12 @@ const ProductCard = ({ productInformation, color }) => {
       toast.error('You need to be logged in to add items to the wishlist');
       return;
     }
-
+  
     try {
       const response = isFavorited
-        ? await removeFromWishlistApi(userId, productInformation._id)
-        : await addToWishlistApi(userId, productInformation._id);
-
+        ? await removeFromWishlistApi(productInformation._id)
+        : await addToWishlistApi({ productId: productInformation._id });
+  
       if (response.data.success) {
         setIsFavorited(!isFavorited);
         toast.success(isFavorited ? 'Removed from wishlist' : 'Added to wishlist');
@@ -83,7 +97,7 @@ const ProductCard = ({ productInformation, color }) => {
       console.error('Error updating wishlist:', error);
     }
   };
-
+  
   return (
     <div className="product-card">
       <Toaster position="top-center" reverseOrder={false} />
@@ -95,7 +109,7 @@ const ProductCard = ({ productInformation, color }) => {
             padding: '5px',
             borderRadius: '5px',
           }}
-          className='badge bg-primary position-absolute top-0'
+          className="badge bg-primary position-absolute top-0"
         >
           {productInformation.productCategory}
         </span>
@@ -115,8 +129,12 @@ const ProductCard = ({ productInformation, color }) => {
             {productInformation.productDescription.split(' ').slice(0, 10).join(' ')}...
           </p>
           <div className="button-group">
-            <button onClick={handleViewMore} className="btn btn-view-more">View More</button>
-            <button onClick={handleAddToCart} className="btn btn-add-to-cart">Add to Cart</button>
+            <button onClick={handleViewMore} className="btn btn-view-more">
+              View More
+            </button>
+            <button onClick={handleAddToCart} className="btn btn-add-to-cart">
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>

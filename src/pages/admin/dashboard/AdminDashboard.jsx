@@ -124,7 +124,7 @@ const AdminDashboard = () => {
     <div>
       <nav className="admin-navbar">
         <div className="admin-navbar-logo">
-          COSMOCARE
+          SparkleNest
         </div>
         <div className="admin-navbar-right">
           {/* Any additional right-aligned elements can be placed here */}
