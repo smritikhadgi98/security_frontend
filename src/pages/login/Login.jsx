@@ -1,10 +1,20 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginUserApi, loginOTPApi, resendLoginOtpApi } from '../../apis/Api';
+import { loginUserApi, verifyOtpApi } from '../../apis/Api';
 import loginui from '../../assets/images/loginui.jpeg';
 import ReCAPTCHA from 'react-google-recaptcha';
 import './Login.css';
+
+// Utility function to sanitize input
+const sanitizeInput = (input) => {
+  return input
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+};
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -15,23 +25,22 @@ const Login = () => {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
   const [otpError, setOtpError] = useState('');
-  const [isResendingOtp, setIsResendingOtp] = useState(false);
 
   const recaptchaRef = useRef(null);
   const navigate = useNavigate();
 
-  const validateInputs = () => {
+  const validation = () => {
     let isValid = true;
 
-    if (!email.includes('@')) {
-      setEmailError('Invalid email address.');
+    if (!email.trim() || !email.includes('@')) {
+      setEmailError('Email is empty or invalid');
       isValid = false;
     } else {
       setEmailError('');
     }
 
-    if (!password) {
-      setPasswordError('Password is required.');
+    if (!password.trim()) {
+      setPasswordError('Password is empty');
       isValid = false;
     } else {
       setPasswordError('');
@@ -40,79 +49,48 @@ const Login = () => {
     return isValid;
   };
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-
-    if (!validateInputs()) return;
+    if (!validation()) return;
 
     if (!captchaToken) {
-      toast.error('Complete the CAPTCHA to proceed.');
+      toast.error('CAPTCHA is missing or expired. Please complete it.');
       recaptchaRef.current?.reset();
       return;
     }
 
-    try {
-      const { data } = await loginUserApi({ email, password, recaptchaToken: captchaToken });
-      if (data.success) {
-        toast.success(data.message);
-        if (data.requireOTP) {
-          setIsOtpSent(true);  // Set OTP required state
+    loginUserApi({ email, password, recaptchaToken: captchaToken })
+      .then((res) => {
+        if (res.data.success) {
+          toast.success(res.data.message);
+          setIsOtpSent(true);
         } else {
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('user', JSON.stringify(data.userData));
-          navigate(data.userData.isAdmin ? '/admin/dashboard' : '/homepage');
+          toast.error(res.data.message);
         }
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      toast.error('Login failed. Please try again.');
-    }
+      })
+      .catch((err) => toast.error(err.response?.data?.message || 'Login failed.'));
   };
 
-  const handleOtpSubmit = async (e) => {
+  const handleOtpSubmit = (e) => {
     e.preventDefault();
-  
-    if (!otp) {
-      setOtpError('OTP is required.');
+    if (!otp.trim()) {
+      setOtpError('OTP is required');
       return;
     }
-  
-    if (!captchaToken) {
-      toast.error('Complete the CAPTCHA to proceed.');
-      recaptchaRef.current?.reset();
-      return;
-    }
-  
-    try {
-      const { data } = await loginOTPApi({ email, otp, recaptchaToken: captchaToken });
-  
-      if (data.success) {
-        toast.success('Login successful!');
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.userData));
-        navigate(data.userData.isAdmin ? '/admin/dashboard' : '/homepage');
-      } else {
-        setOtpError(data.message);
-      }
-    } catch (error) {
-      setOtpError('OTP verification failed.');
-    }
-  };
 
-  const handleResendOtp = async () => {
-    setIsResendingOtp(true);
-    try {
-      const { data } = await resendLoginOtpApi({ email });
-      if (data.success) {
-        toast.success('OTP resent successfully!');
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      toast.error('Failed to resend OTP. Please try again.');
-    }
-    setIsResendingOtp(false);
+    verifyOtpApi({ email, otp })
+      .then((res) => {
+        if (res.data.success) {
+          toast.success('OTP verified successfully!');
+          localStorage.setItem('token', res.data.token);
+          localStorage.setItem('user', JSON.stringify(res.data.userData));
+
+          navigate(res.data.userData.isAdmin ? '/admin/dashboard' : '/homepage');
+        } else {
+          setOtpError(res.data.message);
+        }
+      })
+      .catch((err) => setOtpError(err.response?.data?.message || 'OTP verification failed.'));
   };
 
   return (
@@ -121,86 +99,81 @@ const Login = () => {
       <div className="login-box">
         <div className="login-form">
           <h2 className="login-title">Login</h2>
-          <p className="login-subtitle">Please login to continue</p>
-
-          {/* Email and Password Form */}
-          {!isOtpSent && (
-            <form onSubmit={handleLogin} className="login-fields">
+          <p className="login-subtitle">Please Login to Continue</p>
+          <form onSubmit={handleLogin} className="login-fields">
+            <div className="input-container">
               <input
                 className="login-input"
-                type="email"
+                type="text"
                 placeholder="Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(sanitizeInput(e.target.value))}
               />
               {emailError && <p className="error-message">{emailError}</p>}
-
+            </div>
+            <div className="input-container">
               <input
                 className="login-input"
                 type="password"
                 placeholder="Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => setPassword(sanitizeInput(e.target.value))}
               />
               {passwordError && <p className="error-message">{passwordError}</p>}
-
-              <div className="forgot-password-container">
-                <Link to="/forgotpassword" className="forgot-password-link">
-                  Forgot Password?
-                </Link>
-              </div>
-
-              <div className="recaptcha-container">
-                <ReCAPTCHA
-                  ref={recaptchaRef}
-                  sitekey="6LfXFb4qAAAAALY5BEaLWfTEVPgCX9kVsSpP3z4c"
-                  onChange={(token) => setCaptchaToken(token)}
-                />
-              </div>
-
-              <button type="submit" className="login-button">
-                Login
-              </button>
-            </form>
-          )}
-
-          {/* OTP Form */}
-          {isOtpSent && (
-            <div className="otp-modal-container">
-              <div className="otp-modal">
-                <h2>Verify OTP</h2>
-                <form onSubmit={handleOtpSubmit}>
-                  <input
-                    type="text"
-                    placeholder="Enter OTP"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    className="login-input"
-                  />
-                  {otpError && <p className="error-message">{otpError}</p>}
-
-                  <button type="submit" className="login-button">
-                    Verify OTP
-                  </button>
-                </form>
-                <div className="resend-otp-container">
-                  <button
-                    className="resend-otp-button"
-                    onClick={handleResendOtp}
-                    disabled={isResendingOtp}
-                  >
-                    {isResendingOtp ? 'Resending OTP...' : 'Resend OTP'}
-                  </button>
-                </div>
-              </div>
             </div>
-          )}
+            <div className="forgot-password-container">
+              <Link to="/forgotpassword" className="forgot-password-link">
+                Forgot Password?
+              </Link>
+            </div>
+            <div className="flex justify-center bg-gray-800/50 p-4 rounded-xl backdrop-blur-sm">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey="6LfXFb4qAAAAALY5BEaLWfTEVPgCX9kVsSpP3z4c"
+                onChange={setCaptchaToken}
+              />
+            </div>
+            <button type="submit" disabled={!captchaToken} className="login-button">
+              Login
+            </button>
+          </form>
+          <div className="login-link">
+            <p>
+              Don't have an account?{' '}
+              <Link to="/register" className="text-black hover:underline">
+                Register
+              </Link>
+            </p>
+          </div>
         </div>
-
         <div className="login-images">
-          <img src={loginui} alt="Login illustration" className="login-image" />
+          <div className="login-image">
+            <img src={loginui} alt="Login" />
+          </div>
         </div>
       </div>
+      {isOtpSent && (
+        <div className="otp-modal-container">
+          <div className="otp-modal">
+            <h2>Verify OTP</h2>
+            <form onSubmit={handleOtpSubmit}>
+              <div className="input-container">
+                <input
+                  className="login-input"
+                  type="text"
+                  placeholder="Enter OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(sanitizeInput(e.target.value))}
+                />
+                {otpError && <p className="error-message">{otpError}</p>}
+              </div>
+              <button type="submit" className="login-button">
+                Verify OTP
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,10 +1,12 @@
-/* Existing styles for the login container, box, and form */
+/* Login.css */
+
+/* Styles for the login container, box, and form */
 .login-container {
   @apply min-h-screen flex items-center justify-center relative bg-cover bg-no-repeat;
   background-image: url('../../assets/images/register.webp');
   background-blend-mode: overlay;
-  background-color: rgba(0, 0, 0, 0.5); /* Subtle dark overlay for contrast */
-  height: 100vh; /* Ensure full viewport height */
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100vh;
   width: 100%;
   position: absolute;
   top: 0;
@@ -13,19 +15,23 @@
   padding: 0;
 }
 
+.login-container.blur-background {
+  filter: blur(5px); /* Apply blur when OTP modal is active */
+}
+
 .login-box {
   @apply flex flex-col md:flex-row w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-200;
 }
 
 .login-form {
   @apply w-full md:w-1/2 p-10 flex flex-col justify-center;
-  background-color: #FDE8E9; /* Soft pink for elegance */
-  font-family: 'Roboto', sans-serif; /* Clean and modern font */
+  background-color: #FDE8E9;
+  font-family: 'Roboto', sans-serif;
 }
 
 .login-title {
   @apply text-4xl font-bold text-gray-800 mb-6;
-  font-family: 'Playfair Display', serif; /* Luxurious serif font */
+  font-family: 'Playfair Display', serif;
 }
 
 .login-subtitle {
@@ -38,19 +44,19 @@
 
 .login-input {
   @apply p-4 rounded-lg border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-pink-400;
-  background-color: #FFF8F3; /* Soft cream for elegance */
+  background-color: #FFF8F3;
 }
 
 .login-button {
   @apply rounded-lg py-3 mt-6 font-semibold uppercase hover:bg-gradient-to-r hover:from-pink-500 hover:to-pink-400 transition duration-300 ease-in-out;
-  background: linear-gradient(90deg, #D4AF37, #FFD700); /* Luxurious gold gradient */
+  background: linear-gradient(90deg, #D4AF37, #FFD700);
   color: white;
   border: none;
 }
 
 .login-button:hover {
   @apply transform scale-105;
-  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2); /* Adds a hover shadow for depth */
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
 }
 
 .login-link {
@@ -62,48 +68,42 @@
 }
 
 .login-image {
-  @apply w-full h-full rounded-xl overflow-hidden shadow-md; /* Increased height to 128 */
+  @apply w-full h-full rounded-xl overflow-hidden shadow-md;
 }
 
 .login-image img {
   @apply w-full h-full object-cover rounded-xl;
 }
 
-/* Additional styles for error message */
-.text-black {
-  color: #333333; /* Softer black for luxury feel */
-}
-
-.input-container {
-  position: relative;
-}
-
-.error-message {
-  position: absolute;
-  top: -20px;
-  left: 0;
-  color: #FF6B6B; /* Elegant soft red */
-  font-size: 14px;
-}
-
-/* New styles to move Forgot Password? link to the right */
+/* Forgot password styles */
 .forgot-password-container {
-  @apply flex justify-end w-full mt-2; /* Use flex to push to the right */
+  @apply flex justify-end w-full mt-2;
 }
 
 .forgot-password-link {
   @apply text-sm text-black hover:text-blue-300 font-medium;
 }
+
+/* OTP Modal styles */
+.otp-modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 1000;
+}
+
 .otp-modal {
   width: 400px;
   padding: 20px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.otp-overlay {
-  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .otp-modal-content {
@@ -121,46 +121,14 @@
 
 .otp-modal button {
   margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #D4AF37;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-
-/* For modal centering and background blur */
-
-.otp-modal-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
-  z-index: 1000;
-}
-
-.otp-modal {
-  width: 400px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  animation: scale-up 0.3s ease-in-out;
-}
-
-@keyframes scale-up {
-  0% {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.error-message {
-  color: #FF6B6B; /* Soft red */
-  font-size: 14px;
-  margin-top: -5px;
+.otp-modal button:hover {
+  background-color: #FFD700;
 }

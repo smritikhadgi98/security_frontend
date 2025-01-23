@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
-import { Link } from 'react-router-dom';
-import { registerUserApi } from '../../apis/Api';
+import { Link, useNavigate } from 'react-router-dom';
+import { registerUserApi, verifyOtpApi, verifyRegisterOtpApi } from '../../apis/Api';
 import registerui from '../../assets/images/login.webp';
 import './Register.css';
 
@@ -11,16 +11,23 @@ function Register() {
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
+  
+  const [otp, setOtp] = useState(''); // State for OTP input
+  const [isOtpSent, setIsOtpSent] = useState(false); // Track OTP sent status
+  
   const [usernameError, setUsernameError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [phoneError, setPhoneError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [otpError, setOtpError] = useState(''); // Error for OTP input
+
+  const navigate = useNavigate();
 
   const validateForm = () => {
     let isValid = true;
-
+    
+    // Your existing validation for other fields
     if (!userName.trim()) {
       setUsernameError('Username is required');
       isValid = false;
@@ -42,13 +49,11 @@ function Register() {
       setPhoneError('');
     }
 
-    // Password validation for required field
     if (!password.trim()) {
       setPasswordError('Password is required');
       isValid = false;
     } else {
       setPasswordError('');
-      // Password strength validation (shown in toast only)
       if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
         toast.error("Password must be at least 8 characters long, contain both uppercase and lowercase letters, and include a special character.", { position: "top-right" });
         isValid = false;
@@ -84,12 +89,8 @@ function Register() {
 
     registerUserApi(data)
       .then((response) => {
-        toast.success('Registration successful! Please login to continue.');
-        setUsername('');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        setPhone('');
+        toast.success('Registration successful! Please verify your email.');
+        setIsOtpSent(true); // OTP sent after successful registration
       })
       .catch((error) => {
         if (error.response && error.response.data) {
@@ -100,83 +101,122 @@ function Register() {
       });
   };
 
+  const handleOtpVerification = (e) => {
+    e.preventDefault();
+
+    if (!otp.trim()) {
+      setOtpError('OTP is required');
+      return;
+    }
+
+    const data = {
+      email: email,
+      otp: otp
+    };
+
+    verifyRegisterOtpApi(data)
+      .then((response) => {
+        toast.success('Email verified successfully!');
+        navigate('/login'); // Redirect to login after successful verification
+      })
+      .catch((error) => {
+        if (error.response && error.response.data) {
+          setOtpError(error.response.data.message);
+        } else {
+          setOtpError('Verification failed. Please try again.');
+        }
+      });
+  };
+
   return (
     <div className="register-container">
       <Toaster />
       <div className="register-box">
         <div className="register-form">
           <h2 className="register-title">Sign Up</h2>
-          <p className="register-subtitle">
-            Beauty Tailored to Your Skin: Discover Makeup & Skincare Perfect for Your Unique Type
-          </p>
-
-          <form onSubmit={handleSubmit} className="register-fields">
-            <div className="input-container">
-              <input
-                className="register-input"
-                type="text"
-                name="username"
-                placeholder="Username"
-                value={userName}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-              {usernameError && <p className="error-message">{usernameError}</p>}
-            </div>
-            <div className="input-container">
-              <input
-                className="register-input"
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              {emailError && <p className="error-message">{emailError}</p>}
-            </div>
-            <div className="input-container">
-              <input
-                className="register-input"
-                type="phone"
-                name="phone"
-                placeholder="Phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-              {phoneError && <p className="error-message">{phoneError}</p>}
-            </div>
-            <div className="input-container">
-              <input
-                className="register-input"
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              {passwordError && <p className="error-message">{passwordError}</p>}
-            </div>
-            <div className="input-container">
-              <input
-                className="register-input"
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-              {confirmPasswordError && <p className="error-message">{confirmPasswordError}</p>}
-            </div>
-            <button type="submit" className="register-button">
-              Sign Up
-            </button>
-          </form>
+         
+          {/* Registration Form */}
+          {!isOtpSent ? (
+            <form onSubmit={handleSubmit} className="register-fields">
+              <div className="input-container">
+                <input
+                  className="register-input"
+                  type="text"
+                  name="username"
+                  placeholder="Username"
+                  value={userName}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                {usernameError && <p className="error-message">{usernameError}</p>}
+              </div>
+              <div className="input-container">
+                <input
+                  className="register-input"
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {emailError && <p className="error-message">{emailError}</p>}
+              </div>
+              <div className="input-container">
+                <input
+                  className="register-input"
+                  type="phone"
+                  name="phone"
+                  placeholder="Phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+                {phoneError && <p className="error-message">{phoneError}</p>}
+              </div>
+              <div className="input-container">
+                <input
+                  className="register-input"
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {passwordError && <p className="error-message">{passwordError}</p>}
+              </div>
+              <div className="input-container">
+                <input
+                  className="register-input"
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                {confirmPasswordError && <p className="error-message">{confirmPasswordError}</p>}
+              </div>
+              <button type="submit" className="register-button">Sign Up</button>
+            </form>
+          ) : (
+            // OTP Verification Form
+            <form onSubmit={handleOtpVerification} className="otp-verification">
+              <div className="input-container">
+                <input
+                  className="register-input"
+                  type="text"
+                  name="otp"
+                  placeholder="Enter OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                />
+                {otpError && <p className="error-message">{otpError}</p>}
+              </div>
+              <button type="submit" className="register-button">Verify OTP</button>
+            </form>
+          )}
 
           <div className="login-link">
             <p>
               Already have an account?{' '}
-              <Link to="/login" className="text-black hover:underline">
-                Login
-              </Link>
+              <Link to="/login" className="text-black hover:underline">Login</Link>
             </p>
           </div>
         </div>
