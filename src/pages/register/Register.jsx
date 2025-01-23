@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
-import { registerUserApi, verifyOtpApi, verifyRegisterOtpApi } from '../../apis/Api';
+import { registerUserApi, verifyRegisterOtpApi } from '../../apis/Api';
 import registerui from '../../assets/images/login.webp';
+import zxcvbn from 'zxcvbn'; // Import zxcvbn for password strength checking
 import './Register.css';
 
 function Register() {
@@ -21,6 +22,10 @@ function Register() {
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [otpError, setOtpError] = useState(''); // Error for OTP input
+
+  const [passwordStrength, setPasswordStrength] = useState('');
+  const [passwordStrengthLabel, setPasswordStrengthLabel] = useState('');
+  const [isTypingPassword, setIsTypingPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -54,10 +59,6 @@ function Register() {
       isValid = false;
     } else {
       setPasswordError('');
-      if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-        toast.error("Password must be at least 8 characters long, contain both uppercase and lowercase letters, and include a special character.", { position: "top-right" });
-        isValid = false;
-      }
     }
 
     if (!confirmPassword.trim()) {
@@ -71,6 +72,19 @@ function Register() {
     }
 
     return isValid;
+  };
+
+  // Function to check password strength using zxcvbn
+  const checkPasswordStrength = (password) => {
+    const result = zxcvbn(password);
+    setPasswordStrength(result.score);  // 0 to 4 score
+    if (result.score === 0) {
+      setPasswordStrengthLabel('Low');
+    } else if (result.score === 1 || result.score === 2) {
+      setPasswordStrengthLabel('Medium');
+    } else {
+      setPasswordStrengthLabel('High');
+    }
   };
 
   const handleSubmit = (e) => {
@@ -178,8 +192,17 @@ function Register() {
                   name="password"
                   placeholder="Password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setIsTypingPassword(true); // User starts typing password
+                    checkPasswordStrength(e.target.value);  // Check password strength on change
+                  }}
                 />
+                {isTypingPassword && (
+                  <p className={`password-strength ${passwordStrengthLabel.toLowerCase()}`}>
+                    Password Strength: {passwordStrengthLabel}
+                  </p>
+                )}
                 {passwordError && <p className="error-message">{passwordError}</p>}
               </div>
               <div className="input-container">
@@ -222,7 +245,7 @@ function Register() {
         </div>
         <div className="register-images">
           <div className="register-image">
-            <img src={registerui} alt="Skincare" />
+            <img src={registerui} alt="Register" />
           </div>
         </div>
       </div>

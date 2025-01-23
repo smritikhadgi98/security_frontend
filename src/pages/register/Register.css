@@ -86,3 +86,20 @@
   color: #FF6B6B; /* Soft red for error messages */
   font-size: 14px;
 }
+.password-strength {
+  font-size: 0.9rem;
+  margin-top: 5px;
+  color: #666;
+}
+
+.password-strength.low {
+  color: red;
+}
+
+.password-strength.medium {
+  color: orange;
+}
+
+.password-strength.high {
+  color: green;
+}

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginUserApi, verifyOtpApi } from '../../apis/Api';
+import { loginUserApi, loginOTPApi } from '../../apis/Api';
 import loginui from '../../assets/images/loginui.jpeg';
 import ReCAPTCHA from 'react-google-recaptcha';
 import './Login.css';
@@ -25,7 +25,8 @@ const Login = () => {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
   const [otpError, setOtpError] = useState('');
-
+  const [lockoutMessage, setLockoutMessage] = useState('');
+  const [lockoutTimeRemaining, setLockoutTimeRemaining] = useState(0); // Track lockout time remaining
   const recaptchaRef = useRef(null);
   const navigate = useNavigate();
 
@@ -65,7 +66,23 @@ const Login = () => {
           toast.success(res.data.message);
           setIsOtpSent(true);
         } else {
-          toast.error(res.data.message);
+          if (res.data.lockoutTime) {
+            // Handle account lockout
+            const remainingTime = Math.floor((new Date(res.data.lockoutTime) - new Date()) / 1000); // time in seconds
+            if (remainingTime > 0) {
+              setLockoutMessage(`Account locked. Try again in ${remainingTime} seconds.`);
+              setLockoutTimeRemaining(remainingTime);
+              setTimeout(() => {
+                setLockoutMessage('');
+                setLockoutTimeRemaining(0);
+              }, remainingTime * 1000);
+            } else {
+              setLockoutMessage('');
+              setLockoutTimeRemaining(0);
+            }
+          } else {
+            toast.error(res.data.message);
+          }
         }
       })
       .catch((err) => toast.error(err.response?.data?.message || 'Login failed.'));
@@ -73,25 +90,28 @@ const Login = () => {
 
   const handleOtpSubmit = (e) => {
     e.preventDefault();
+    setOtpError('');  // Clear previous OTP error
+  
     if (!otp.trim()) {
       setOtpError('OTP is required');
       return;
     }
-
-    verifyOtpApi({ email, otp })
+  
+    loginOTPApi({ email, otp })
       .then((res) => {
         if (res.data.success) {
           toast.success('OTP verified successfully!');
           localStorage.setItem('token', res.data.token);
           localStorage.setItem('user', JSON.stringify(res.data.userData));
-
+  
           navigate(res.data.userData.isAdmin ? '/admin/dashboard' : '/homepage');
         } else {
-          setOtpError(res.data.message);
+          setOtpError(res.data.message || 'OTP verification failed');
         }
       })
       .catch((err) => setOtpError(err.response?.data?.message || 'OTP verification failed.'));
   };
+  
 
   return (
     <div className={`login-container ${isOtpSent ? 'blur-background' : ''}`}>
@@ -100,6 +120,7 @@ const Login = () => {
         <div className="login-form">
           <h2 className="login-title">Login</h2>
           <p className="login-subtitle">Please Login to Continue</p>
+          {lockoutMessage && <p className="error-message">{lockoutMessage}</p>}
           <form onSubmit={handleLogin} className="login-fields">
             <div className="input-container">
               <input
@@ -108,6 +129,7 @@ const Login = () => {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(sanitizeInput(e.target.value))}
+                disabled={lockoutTimeRemaining > 0} // Disable input during lockout
               />
               {emailError && <p className="error-message">{emailError}</p>}
             </div>
@@ -118,6 +140,7 @@ const Login = () => {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(sanitizeInput(e.target.value))}
+                disabled={lockoutTimeRemaining > 0} // Disable input during lockout
               />
               {passwordError && <p className="error-message">{passwordError}</p>}
             </div>
@@ -131,9 +154,10 @@ const Login = () => {
                 ref={recaptchaRef}
                 sitekey="6LfXFb4qAAAAALY5BEaLWfTEVPgCX9kVsSpP3z4c"
                 onChange={setCaptchaToken}
+                disabled={lockoutTimeRemaining > 0} // Disable CAPTCHA during lockout
               />
             </div>
-            <button type="submit" disabled={!captchaToken} className="login-button">
+            <button type="submit" disabled={!captchaToken || lockoutTimeRemaining > 0} className="login-button">
               Login
             </button>
           </form>
