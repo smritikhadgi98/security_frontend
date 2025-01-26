@@ -1,75 +1,80 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { fetchUserDataApi, updateUserProfileApi, uploadProfilePictureApi } from "../../apis/Api"; // Adjust the path as needed
+import './ProfileEdit.css';
+import { toast, Toaster } from 'react-hot-toast';
+import Navbar from '../../components/NavBar';
 
 const ProfileEdit = () => {
   const [formData, setFormData] = useState({
-    userName: '',
-    email: '',
-    phone: '',
-    profilePicture: null
+    userName: "",
+    email: "",
+    phone: "",
+    profilePicture: null,
   });
-
   const [previewImage, setPreviewImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
+  // Fetch user data on component mount
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await fetch('/api/user/current', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        const result = await response.json();
+        const result = await fetchUserDataApi();
         if (result.success) {
           const { userName, email, phone, profilePicture } = result.user;
           setFormData({ userName, email, phone, profilePicture });
-          
           if (profilePicture) {
-            setPreviewImage(`/profile_pictures/${profilePicture}`);
+            setPreviewImage(`https://localhost:5000/profile_pictures/${profilePicture}`);
           }
+        } else {
+          throw new Error(result.message || "Failed to fetch user data");
         }
       } catch (error) {
-        console.error('Fetch error:', error);
+        console.error("Error fetching user data:", error);
+        toast.error("Failed to load user data. Please try again later.");
       }
     };
 
     fetchUserData();
   }, []);
 
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle file input changes
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setFormData(prev => ({ ...prev, profilePicture: file }));
-    
-    const reader = new FileReader();
-    reader.onloadend = () => setPreviewImage(reader.result);
-    reader.readAsDataURL(file);
+    if (file) {
+      setFormData((prev) => ({ ...prev, profilePicture: file }));
+
+      // Preview the selected image
+      const reader = new FileReader();
+      reader.onloadend = () => setPreviewImage(reader.result);
+      reader.readAsDataURL(file);
+    }
   };
 
+  // Submit the form
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    try {
-      const token = localStorage.getItem('token');
-      let profilePictureName = formData.profilePicture;
+    setIsLoading(true);
 
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("User is not authenticated.");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      let profilePictureName = formData.profilePicture;
       if (formData.profilePicture instanceof File) {
         const pictureFormData = new FormData();
-        pictureFormData.append('profilePicture', formData.profilePicture);
-        
-        const uploadResponse = await fetch('/api/user/profile_picture', {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${token}` },
-          body: pictureFormData
-        });
-        
-        const uploadResult = await uploadResponse.json();
+        pictureFormData.append("profilePicture", formData.profilePicture);
+
+        const uploadResult = await uploadProfilePictureApi(pictureFormData);
         profilePictureName = uploadResult.profilePicture;
       }
 
@@ -77,93 +82,102 @@ const ProfileEdit = () => {
         userName: formData.userName,
         email: formData.email,
         phone: formData.phone,
-        profilePicture: profilePictureName
+        profilePicture: profilePictureName,
       };
 
-      const updateResponse = await fetch('/api/user/update', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(updateData)
-      });
+      const updateResult = await updateUserProfileApi(updateData);
 
-      const updateResult = await updateResponse.json();
-      alert(updateResult.message || 'Profile updated successfully');
-    } catch (error) {
-      console.error('Update error:', error);
-      alert('Profile update failed');
+      if (updateResult.success) {
+        toast.success("Profile updated successfully!");
+      } else {
+        throw new Error(updateResult.message || "Failed to update profile.");
+      }
+    } catch (updateError) {
+      toast.error(updateError.message || "Error updating profile.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-center">Edit Profile</h2>
-      <form onSubmit={handleSubmit}>
-        {previewImage && (
-          <div className="mb-4 flex justify-center">
-            <img 
-              src={previewImage} 
-              alt="Profile Preview" 
-              className="w-32 h-32 rounded-full object-cover"
-            />
+    <div className="profile-edit-page">
+      <Navbar className="navbar" />
+      <Toaster position="top-center" reverseOrder={false} />
+      <div className="profile-edit-container">
+        <div className="profile-edit-header">
+          <h1>Edit Profile</h1>
+        </div>
+        <div className="profile-edit-content">
+          <div className="profile-edit-form-container">
+            <form onSubmit={handleSubmit} className="profile-edit-form">
+              {previewImage && (
+                <div className="mb-4 flex justify-center">
+                  <img
+                    src={previewImage}
+                    alt="Profile Preview"
+                    className="profile-picture-preview"
+                  />
+                </div>
+              )}
+              <div className="mb-4">
+                <label className="block mb-2">Profile Picture</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="profile-edit-input"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-2">Username</label>
+                <input
+                  type="text"
+                  name="userName"
+                  value={formData.userName}
+                  onChange={handleInputChange}
+                  className="profile-edit-input"
+                  placeholder="Enter username"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-2">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="profile-edit-input"
+                  placeholder="Enter email"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-2">Phone</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="profile-edit-input"
+                  placeholder="Enter phone number"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className={`profile-edit-button ${
+                  isLoading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
+                }`}
+              >
+                {isLoading ? "Updating..." : "Update Profile"}
+              </button>
+            </form>
           </div>
-        )}
-        
-        <div className="mb-4">
-          <label className="block mb-2">Profile Picture</label>
-          <input 
-            type="file" 
-            accept="image/*"
-            onChange={handleFileChange}
-            className="w-full p-2 border rounded"
-          />
         </div>
-
-        <div className="mb-4">
-          <label className="block mb-2">Username</label>
-          <input
-            type="text"
-            name="userName"
-            value={formData.userName}
-            onChange={handleInputChange}
-            className="w-full p-2 border rounded"
-            placeholder="Enter username"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-2">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            className="w-full p-2 border rounded"
-            placeholder="Enter email"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-2">Phone</label>
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleInputChange}
-            className="w-full p-2 border rounded"
-            placeholder="Enter phone number"
-          />
-        </div>
-
-        <button 
-          type="submit" 
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-        >
-          Update Profile
-        </button>
-      </form>
+      </div>
     </div>
   );
 };

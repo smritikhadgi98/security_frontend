@@ -119,6 +119,49 @@ export const searchProductApi = (query, category) => {
     });
 };
 
+
+export const fetchUserDataApi = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("No token found in localStorage");
+  }
+
+  const response = await Api.get("/api/user/current", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data; // Return the response data
+};
+
+export const updateUserProfileApi = async (data) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("No token found in localStorage");
+  }
+
+  const response = await Api.put("/api/user/update", data, getConfig());
+  return response.data;
+};
+
+// Profile Picture Upload API
+export const uploadProfilePictureApi = async (formData) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("No token found in localStorage");
+  }
+
+  const response = await Api.post("/api/user/profile_picture", formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return response.data;
+};
+
 // Cart APIs
 export const getCartApi = () => Api.get("/api/cart/get_cart", getConfig());
 
