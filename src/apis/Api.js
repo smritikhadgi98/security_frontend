@@ -170,8 +170,8 @@ export const addToCartApi = (data) => Api.post("/api/cart/add_to_cart", data, ge
 export const removeFromCartApi = (id) => Api.delete(`/api/cart/remove_from_cart/${id}`, getConfig());
 
 // Function to update the quantity of an item in the cart
-// export const updateQuantityApi = (id, data) =>
-//     Api.put(`/api/cart/update_quantity/${id}`, data, getConfig());
+
+
 
 export const updateCartStatusApi = (data) => Api.put("/api/cart/update_status", data, getConfig());
 
