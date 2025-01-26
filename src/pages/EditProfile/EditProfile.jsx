@@ -43,10 +43,25 @@ const ProfileEdit = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle file input changes
+  // Handle file input changes with validation
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validate file type: Only allow .png, .jpg, and .jpeg
+      const fileExtension = file.name.split('.').pop().toLowerCase();
+      if (fileExtension !== 'png' && fileExtension !== 'jpg' && fileExtension !== 'jpeg') {
+        toast.error("Only PNG and JPG files are allowed!");
+        e.target.value = ""; // Reset the file input
+        return;
+      }
+
+      // Reject .js files explicitly
+      if (fileExtension === 'js') {
+        toast.error("JavaScript files are not allowed!");
+        e.target.value = ""; // Reset the file input
+        return;
+      }
+
       setFormData((prev) => ({ ...prev, profilePicture: file }));
 
       // Preview the selected image

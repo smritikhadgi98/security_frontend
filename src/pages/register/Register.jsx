@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { registerUserApi, verifyRegisterOtpApi } from '../../apis/Api';
 import registerui from '../../assets/images/login.webp';
 import zxcvbn from 'zxcvbn'; // Import zxcvbn for password strength checking
-import DOMPurify from 'dompurify'; // Import dompurify for input sanitization
 import './Register.css';
 
 function Register() {
@@ -24,16 +23,25 @@ function Register() {
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [otpError, setOtpError] = useState(''); // Error for OTP input
 
-  const [passwordStrength, setPasswordStrength] = useState('');
-  const [passwordStrengthLabel, setPasswordStrengthLabel] = useState('');
-  const [isTypingPassword, setIsTypingPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState('');  // Strength score
+  const [passwordStrengthLabel, setPasswordStrengthLabel] = useState(''); // Strength label
+  const [isTypingPassword, setIsTypingPassword] = useState(false);  // Check if the user is typing
 
   const navigate = useNavigate();
+
+  const sanitizeInput = (input) => {
+    return input
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#x27;");
+  };
 
   const validateForm = () => {
     let isValid = true;
     
-    // Your existing validation for other fields
+    // Validate userName
     if (!userName.trim()) {
       setUsernameError('Username is required');
       isValid = false;
@@ -41,6 +49,7 @@ function Register() {
       setUsernameError('');
     }
 
+    // Validate email
     if (!email.trim()) {
       setEmailError('Email is required');
       isValid = false;
@@ -48,6 +57,7 @@ function Register() {
       setEmailError('');
     }
 
+    // Validate phone
     if (!phone.trim()) {
       setPhoneError('Phone number is required');
       isValid = false;
@@ -55,6 +65,7 @@ function Register() {
       setPhoneError('');
     }
 
+    // Validate password
     if (!password.trim()) {
       setPasswordError('Password is required');
       isValid = false;
@@ -62,6 +73,7 @@ function Register() {
       setPasswordError('');
     }
 
+    // Validate confirm password
     if (!confirmPassword.trim()) {
       setConfirmPasswordError('Confirm Password is required');
       isValid = false;
@@ -75,7 +87,6 @@ function Register() {
     return isValid;
   };
 
-  // Function to check password strength using zxcvbn
   const checkPasswordStrength = (password) => {
     const result = zxcvbn(password);
     setPasswordStrength(result.score);  // 0 to 4 score
@@ -95,18 +106,18 @@ function Register() {
       return;
     }
 
-    // Sanitize inputs to prevent HTML injection
-    const sanitizedData = {
-      userName: DOMPurify.sanitize(userName),
-      email: DOMPurify.sanitize(email),
-      password: DOMPurify.sanitize(password),
-      phone: DOMPurify.sanitize(phone)
+    const data = {
+      userName: userName,
+      email: email,
+      password: password,
+      phone: phone
     };
 
-    registerUserApi(sanitizedData)
+    registerUserApi(data)
       .then((response) => {
         toast.success('Registration successful! Please verify your email.');
         setIsOtpSent(true); // OTP sent after successful registration
+        setOtp(''); // Reset OTP field when switching to OTP form
       })
       .catch((error) => {
         if (error.response && error.response.data) {
@@ -125,17 +136,15 @@ function Register() {
       return;
     }
 
-    const sanitizedOtp = DOMPurify.sanitize(otp); // Sanitize OTP input
-
     const data = {
-      email: DOMPurify.sanitize(email),
-      otp: sanitizedOtp
+      email: email,
+      otp: otp
     };
 
     verifyRegisterOtpApi(data)
       .then((response) => {
         toast.success('Email verified successfully!');
-        navigate('/login'); // Redirect to login after successful verification
+        navigate('/homepage'); // Redirect to login after successful verification
       })
       .catch((error) => {
         if (error.response && error.response.data) {
@@ -152,7 +161,7 @@ function Register() {
       <div className="register-box">
         <div className="register-form">
           <h2 className="register-title">Sign Up</h2>
-         
+
           {/* Registration Form */}
           {!isOtpSent ? (
             <form onSubmit={handleSubmit} className="register-fields">
@@ -163,7 +172,7 @@ function Register() {
                   name="username"
                   placeholder="Username"
                   value={userName}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) => setUsername(sanitizeInput(e.target.value))}
                 />
                 {usernameError && <p className="error-message">{usernameError}</p>}
               </div>
@@ -174,18 +183,18 @@ function Register() {
                   name="email"
                   placeholder="Email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(sanitizeInput(e.target.value))}
                 />
                 {emailError && <p className="error-message">{emailError}</p>}
               </div>
               <div className="input-container">
                 <input
                   className="register-input"
-                  type="phone"
+                  type="text"
                   name="phone"
                   placeholder="Phone"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => setPhone(sanitizeInput(e.target.value))}
                 />
                 {phoneError && <p className="error-message">{phoneError}</p>}
               </div>
@@ -197,7 +206,7 @@ function Register() {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => {
-                    setPassword(e.target.value);
+                    setPassword(sanitizeInput(e.target.value));
                     setIsTypingPassword(true); // User starts typing password
                     checkPasswordStrength(e.target.value);  // Check password strength on change
                   }}
@@ -216,7 +225,7 @@ function Register() {
                   name="confirmPassword"
                   placeholder="Confirm Password"
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={(e) => setConfirmPassword(sanitizeInput(e.target.value))}
                 />
                 {confirmPasswordError && <p className="error-message">{confirmPasswordError}</p>}
               </div>

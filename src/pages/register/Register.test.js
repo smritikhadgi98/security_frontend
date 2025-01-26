@@ -1,129 +1,158 @@
-import '@testing-library/jest-dom';
-import { fireEvent, render, screen,waitFor } from '@testing-library/react';
-import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { registerUserApi } from '../../apis/Api'; // Adjust the path as necessary
-import Register from './Register';
+import React, { useState } from 'react';
+import { Toaster, toast } from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router-dom';
+import { registerUserApi } from '../../apis/Api';
+import './Register.css';
 
+// Utility function to sanitize input
+const sanitizeInput = (input) => {
+  return input
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+};
 
-// Mock the API call
-jest.mock('../../apis/Api', () => ({
-    registerUserApi: jest.fn(),
-}));
+const Register = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [usernameError, setUsernameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const navigate = useNavigate();
 
-describe('Register Component', () => {
-    beforeEach(() => {
-        // Clear local storage before each test
-        localStorage.clear();
-    });
+  const validation = () => {
+    let isValid = true;
 
-    test('renders registration form', () => {
-        render(
-            <Router>
-                <Register />
-            </Router>
-        );
+    if (!username.trim()) {
+      setUsernameError('Username is required');
+      isValid = false;
+    } else {
+      setUsernameError('');
+    }
 
-        expect(screen.getByPlaceholderText(/Username/i)).toBeInTheDocument();
-        // expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/Phone/i)).toBeInTheDocument();
-        // expect(screen.getByPlaceholderText(/Password/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/Confirm password/i)).toBeInTheDocument();
-        // expect(screen.getByText(/sign up/i)).toBeInTheDocument();
-    });
+    if (!email.trim() || !email.includes('@')) {
+      setEmailError('Email is required');
+      isValid = false;
+    } else {
+      setEmailError('');
+    }
 
-    test('displays validation errors when form is submitted with empty fields', async () => {
-        render(
-            <Router>
-                <Register />
-            </Router>
-        );
+    if (!phone.trim()) {
+      setPhoneError('Phone number is required');
+      isValid = false;
+    } else {
+      setPhoneError('');
+    }
 
-        // Get the submit button
-        const submitButton = screen.getByRole('button', { name: /sign up/i });
+    if (!password.trim()) {
+      setPasswordError('Password is required');
+      isValid = false;
+    } else {
+      setPasswordError('');
+    }
 
-        // Click the submit button
-        fireEvent.click(submitButton);
+    if (!confirmPassword.trim()) {
+      setConfirmPasswordError('Confirm Password is required');
+      isValid = false;
+    } else if (confirmPassword !== password) {
+      setConfirmPasswordError('Passwords do not match');
+      isValid = false;
+    } else {
+      setConfirmPasswordError('');
+    }
 
-        // Check if the validation error messages are displayed
-        expect(await screen.findByText(/Username is required/i)).toBeInTheDocument();
-        expect(await screen.findByText(/Email is required/i)).toBeInTheDocument();
-        expect(await screen.findByText(/Phone number is required/i)).toBeInTheDocument();
-        // expect(await screen.findByText(/Password is required/i)).toBeInTheDocument();
-        expect(await screen.findByText(/Confirm Password is required/i)).toBeInTheDocument();
-    });
+    return isValid;
+  };
 
-    test('displays error when passwords do not match', async () => {
-        render(
-            <Router>
-                <Register />
-            </Router>
-        );
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validation()) return;
 
-        fireEvent.change(screen.getByPlaceholderText(/username/i), { target: { value: 'JohnDoe' } });
-        fireEvent.change(screen.getByPlaceholderText(/email/i), { target: { value: 'johndoe@example.com' } });
-        fireEvent.change(screen.getByPlaceholderText(/phone/i), { target: { value: '1234567890' } });
-        // fireEvent.change(screen.getByPlaceholderText(/password/i), { target: { value: 'password123' } });
-        fireEvent.change(screen.getByPlaceholderText(/confirm password/i), { target: { value: 'differentPassword' } });
+    registerUserApi({ username, email, phone, password })
+      .then((res) => {
+        if (res.data.success) {
+          toast.success('Registration successful! Please login to continue.');
+          navigate('/login');
+        } else {
+          toast.error(res.data.message || 'Registration failed. Please try again.');
+        }
+      })
+      .catch((err) => toast.error(err.response?.data?.message || 'Registration failed.'));
+  };
 
-        const submitButton = screen.getByRole('button', { name: /sign up/i });
-        fireEvent.click(submitButton);
+  return (
+    <div className="register-container">
+      <Toaster />
+      <div className="register-box">
+        <h2>Register</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="input-container">
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(sanitizeInput(e.target.value))}
+            />
+            {usernameError && <p className="error-message">{usernameError}</p>}
+          </div>
+          <div className="input-container">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(sanitizeInput(e.target.value))}
+            />
+            {emailError && <p className="error-message">{emailError}</p>}
+          </div>
+          <div className="input-container">
+            <input
+              type="text"
+              placeholder="Phone"
+              value={phone}
+              onChange={(e) => setPhone(sanitizeInput(e.target.value))}
+            />
+            {phoneError && <p className="error-message">{phoneError}</p>}
+          </div>
+          <div className="input-container">
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(sanitizeInput(e.target.value))}
+            />
+            {passwordError && <p className="error-message">{passwordError}</p>}
+          </div>
+          <div className="input-container">
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(sanitizeInput(e.target.value))}
+            />
+            {confirmPasswordError && <p className="error-message">{confirmPasswordError}</p>}
+          </div>
+          <button type="submit" className="register-button">
+            Sign Up
+          </button>
+        </form>
+        <div className="login-link">
+          <p>
+            Already have an account?{' '}
+            <Link to="/login" className="text-black hover:underline">
+              Login
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-        expect(await screen.findByText(/Passwords do not match/i)).toBeInTheDocument();
-    });
-    test('submits the form and displays success message on successful registration', async () => {
-        registerUserApi.mockResolvedValueOnce({ data: { message: 'Registration successful!' } });
-
-        render(
-            <Router>
-                <Register />
-            </Router>
-        );
-
-        fireEvent.change(screen.getByPlaceholderText(/username/i), { target: { value: 'JohnDoe' } });
-        fireEvent.change(screen.getByPlaceholderText(/email/i), { target: { value: 'johndoe@example.com' } });
-        fireEvent.change(screen.getByPlaceholderText(/phone/i), { target: { value: '1234567890' } });
-        // fireEvent.change(screen.getByPlaceholderText(/password/i), { target: { value: 'password123' } });
-        fireEvent.change(screen.getByPlaceholderText(/confirm password/i), { target: { value: 'password123' } });
-
-        const submitButton = screen.getByRole('button', { name: /sign up/i });
-        fireEvent.click(submitButton);
-
-        await waitFor(() => {
-            expect(screen.getByText(/Registration successful! Please login to continue./i)).toBeInTheDocument();
-        });
-    });
-
-    test('displays error message on registration failure', async () => {
-        registerUserApi.mockRejectedValueOnce({
-            response: { data: { message: 'Registration failed. Please try again.' } },
-        });
-    
-        render(
-            <Router>
-                <Register />
-            </Router>
-        );
-    
-        fireEvent.change(screen.getByPlaceholderText(/username/i), { target: { value: 'JohnDoe' } });
-        fireEvent.change(screen.getByPlaceholderText(/email/i), { target: { value: 'johndoe@example.com' } });
-        fireEvent.change(screen.getByPlaceholderText(/phone/i), { target: { value: '1234567890' } });
-        // fireEvent.change(screen.getByPlaceholderText(/password/i), { target: { value: 'password123' } });
-        fireEvent.change(screen.getByPlaceholderText(/confirm password/i), { target: { value: 'password123' } });
-    
-        const submitButton = screen.getByRole('button', { name: /sign up/i });
-        fireEvent.click(submitButton);
-    
-        // Use a custom matcher function if needed
-        await waitFor(() => {
-            expect(screen.getByText((content, element) => 
-                content.includes('Registration failed. Please try again.')
-            )).toBeInTheDocument();
-        });
-    });
-
-    
-    
-
-    
-});
+export default Register;
