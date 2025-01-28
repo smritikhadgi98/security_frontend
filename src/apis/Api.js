@@ -167,9 +167,7 @@ export const getCartApi = () => Api.get("/api/cart/get_cart", getConfig());
 
 export const addToCartApi = (data) => Api.post("/api/cart/add_to_cart", data, getConfig());
 
-export const removeFromCartApi = (id) => Api.delete(`/api/cart/remove_from_cart/${id}`, getConfig());
-
-
+export const removeFromCartApi = (id) => Api.put(`/api/cart/remove_from_cart/${id}`, getConfig());
 
 
 export const updateCartStatusApi = (data) => Api.put("/api/cart/update_status", data, getConfig());
