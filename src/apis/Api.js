@@ -178,7 +178,7 @@ export const addToWishlistApi = (data) => Api.post("/api/wishlist/add",data, get
 export const getWishlistItemsApi = () => Api.get("/api/wishlist/get_wishlist", getConfig());
 
 export const removeFromWishlistApi = (productId, wishlistItemId) => {
-    return Api.post("/api/wishlist/remove", { 
+    return Api.put("/api/wishlist/remove", { 
       id: productId, 
       itemId: wishlistItemId 
     }, getConfig());
