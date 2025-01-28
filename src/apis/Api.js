@@ -45,6 +45,10 @@ export const forgotPasswordApi = (data) =>
   export const verifyOtpApi = (data) => Api.post("/api/user/verify_otp", data);
 
 
+  // Get Password History
+export const getPasswordHistoryApi = (data) =>
+  Api.post("/api/user/get-password-history", data);
+
   export const verifyRegisterOtpApi = (data) =>
     Api.post("/api/user/verify_register_otp", data);
    
@@ -230,5 +234,20 @@ const KhaltiApi = axios.create({
         authorization: `key 45615eee5f444d8186bce4b1766896fa`,
     },
 });
+
+
+
+export const fetchActivityLogsApi = async () => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(
+    "https://localhost:5000/api/logs/activity-logs",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data.logs;
+};
 
 export const initiateKhaltiPayment = (data) => KhaltiApi.post("api/v2/epayment/initiate/", data);

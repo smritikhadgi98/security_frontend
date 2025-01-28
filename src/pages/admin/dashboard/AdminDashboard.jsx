@@ -150,6 +150,14 @@ const AdminDashboard = () => {
                 View Order
               </button>
             </Link>
+            <Link to="/admin/activity-log">
+              <button
+                type="button"
+                className="admin-dashboard-button"
+              >
+                Activity Log
+              </button>
+            </Link>
             <button
               type="button"
               className="admin-dashboard-button"

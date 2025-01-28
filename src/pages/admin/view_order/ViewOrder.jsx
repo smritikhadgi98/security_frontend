@@ -54,10 +54,6 @@ const ViewOrder = () => {
     );
   }
 
-  // const formatAddress = (address) => {
-  //     return `${address.firstName}, ${address.street}, ${address.city}, ${address.state} ${address.zipCode}, ${address.country}`;
-  // };
-
   const formatAddress = (order) => {
     return `${order.street}, ${order.city},${order.phone}`;
   };
@@ -120,15 +116,22 @@ const ViewOrder = () => {
           <div className="space-y-4 md:space-y-6">
             {orders.map((order) => (
               <div key={order._id} className="order-card">
-                <div className="order-header" onClick={() => toggleOrderExpansion(order._id)}>
+                <div
+                  className="order-header"
+                  onClick={() => toggleOrderExpansion(order._id)}
+                >
                   <div>
                     <h2 className="order-title">Order #{order._id.slice(-6)}</h2>
                     <p className="order-user">Placed by: {order.userId}</p>
                   </div>
                   <div className="flex items-center space-x-4">
-                    <span className="order-price">Rs {order.totalPrice.toFixed(2)}</span>
+                    <span className="order-price">
+                      Rs {order.totalPrice.toFixed(2)}
+                    </span>
                     <svg
-                      className={`expand-icon ${expandedOrder === order._id ? "open" : ""}`}
+                      className={`expand-icon ${
+                        expandedOrder === order._id ? "open" : ""
+                      }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -149,26 +152,40 @@ const ViewOrder = () => {
                   <div className="order-details">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       <div>
-                        <h3 className="text-lg font-semibold mb-3 text-gray-700">Order Details</h3>
+                        <h3 className="text-lg font-semibold mb-3 text-gray-700">
+                          Order Details
+                        </h3>
                         <div className="space-y-3">
                           {order.carts.map((product) => (
-                            <div key={product.productId._id} className="product-item">
+                            <div
+                              key={product.productId._id}
+                              className="product-item"
+                            >
                               <img
                                 src={`http://localhost:5000/products/${product.productId.productImage}`}
                                 alt={product.productId.productName}
                                 className="product-image"
                               />
                               <div className="product-details">
-                                <p className="product-name">{product.productId.productName}</p>
-                                <p className="product-quantity">Quantity: {product.quantity}</p>
-                                <p className="product-price">Rs {product.productId.productPrice.toFixed(2)}</p>
+                                <p className="product-name">
+                                  {product.productId.productName}
+                                </p>
+                                <p className="product-quantity">
+                                  Quantity: {product.quantity}
+                                </p>
+                                <p className="product-price">
+                                  Rs{" "}
+                                  {product.productId.productPrice.toFixed(2)}
+                                </p>
                               </div>
                             </div>
                           ))}
                         </div>
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold mb-3 text-gray-700">Shipping Information</h3>
+                        <h3 className="text-lg font-semibold mb-3 text-gray-700">
+                          Shipping Information
+                        </h3>
                         <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
                           <p className="text-gray-700 mb-2">
                             <span className="font-semibold">Address:</span>
@@ -180,7 +197,12 @@ const ViewOrder = () => {
                           </p>
                         </div>
                         <div className="mt-4">
-                          <label htmlFor="status" className="block text-sm font-medium text-gray-700">Order Status</label>
+                          <label
+                            htmlFor="status"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Order Status
+                          </label>
                           <select
                             id="status"
                             value={order.status}
@@ -201,7 +223,9 @@ const ViewOrder = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center text-gray-600">No orders found.</div>
+          <div className="flex justify-center items-center h-40 bg-gray-100 rounded-lg shadow-md">
+            <p className="text-gray-500 text-lg">No orders found.</p>
+          </div>
         )}
       </div>
     </div>

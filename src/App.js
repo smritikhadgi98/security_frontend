@@ -16,6 +16,7 @@ import AddToCart from './pages/addToCart/AddToCart';
 import Wishlist from './pages/wishlist/Wishlist';
 import PlaceOrder from './pages/order/PlaceOrder';
 import ViewOrder from './pages/admin/view_order/ViewOrder';
+import ActivityLog from './pages/admin/dashboard/ActivityLog';
 import EditProfile from './pages/EditProfile/EditProfile';
 import ForgetPassword from './forgetpassword/ForgetPassword';
 
@@ -33,6 +34,8 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path='/admin/update/:id' element={<UpdateProduct />} />
           <Route path='/admin/view-order' element={<ViewOrder />} />
+          <Route path='/admin/activity-log' element={<ActivityLog />} />
+
         </Route>
 
         <Route element={<UserRoutes />}>
