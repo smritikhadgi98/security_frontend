@@ -69,7 +69,7 @@ const ForgetPassword = () => {
     // Validate if the new password is not reused
     const isValidPassword = await validateNewPassword(password);
     if (!isValidPassword) {
-      toast.error("Password previously used"); // Toast error first
+      toast.error(); // Toast error first
       setIsLoading(false); // Stop loading before returning
       return; // Return early to prevent further execution
     }
