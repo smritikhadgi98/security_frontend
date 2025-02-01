@@ -40,7 +40,7 @@ function Register() {
 
   const validateForm = () => {
     let isValid = true;
-    
+  
     // Validate userName
     if (!userName.trim()) {
       setUsernameError('Username is required');
@@ -48,7 +48,7 @@ function Register() {
     } else {
       setUsernameError('');
     }
-
+  
     // Validate email
     if (!email.trim()) {
       setEmailError('Email is required');
@@ -56,7 +56,7 @@ function Register() {
     } else {
       setEmailError('');
     }
-
+  
     // Validate phone
     if (!phone.trim()) {
       setPhoneError('Phone number is required');
@@ -64,15 +64,23 @@ function Register() {
     } else {
       setPhoneError('');
     }
-
+  
     // Validate password
     if (!password.trim()) {
       setPasswordError('Password is required');
       isValid = false;
     } else {
-      setPasswordError('');
+      // Regex for password validation: at least 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character
+      const passwordValidationRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      if (!passwordValidationRegex.test(password)) {
+        toast.error('Password must be at least 8 characters long, and include at least one uppercase letter, one lowercase letter, one number, and one special character');
+        setPasswordError('Password format is incorrect');
+        isValid = false;
+      } else {
+        setPasswordError('');
+      }
     }
-
+  
     // Validate confirm password
     if (!confirmPassword.trim()) {
       setConfirmPasswordError('Confirm Password is required');
@@ -83,9 +91,10 @@ function Register() {
     } else {
       setConfirmPasswordError('');
     }
-
+  
     return isValid;
   };
+  
 
   const checkPasswordStrength = (password) => {
     const result = zxcvbn(password);

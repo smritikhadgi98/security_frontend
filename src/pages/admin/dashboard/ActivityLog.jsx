@@ -18,6 +18,7 @@ const ActivityLog = () => {
   const [logs, setLogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Fetch activity logs when component mounts
   useEffect(() => {
     const fetchLogs = async () => {
       try {
@@ -32,6 +33,7 @@ const ActivityLog = () => {
     fetchLogs();
   }, []);
 
+  // Get the color for HTTP methods (GET, POST, PUT, DELETE)
   const getMethodColor = (method) => {
     const colors = {
       GET: "method-get",
@@ -42,6 +44,7 @@ const ActivityLog = () => {
     return colors[method] || "method-get";
   };
 
+  // Get the color for status (200-299 success, 400-499 error, else warning)
   const getStatusColor = (status) => {
     return status >= 200 && status < 300
       ? "status-success"
@@ -50,6 +53,7 @@ const ActivityLog = () => {
       : "status-warning";
   };
 
+  // Show loading spinner while data is being fetched
   if (isLoading) {
     return (
       <div className="loading">
@@ -120,14 +124,15 @@ const ActivityLog = () => {
               >
                 <td>
                   <div className="flex items-center">
-                    <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-400 to-red-400 flex items-center justify-center text-white">
-                      {log.username[0].toUpperCase()}
-                    </div>
+                    {/* <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-400 to-red-400 flex items-center justify-center text-white">
+                      {log.username ? log.username[0].toUpperCase() : ""}
+                    </div> */}
                     <div className="ml-3">
-                      <div className="text-sm font-medium">{log.username}</div>
+                      <div className="text-sm font-medium">{log.username || "Unknown"}</div>
                     </div>
                   </div>
                 </td>
+
                 <td>
                   <div className="text-sm text-gray-900 max-w-xs truncate">{log.url}</div>
                 </td>
@@ -137,7 +142,9 @@ const ActivityLog = () => {
                   </span>
                 </td>
                 <td>
-                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">{log.role}</span>
+                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                    {log.role}
+                  </span>
                 </td>
                 <td>
                   <div className={`flex items-center ${getStatusColor(log.status)}`}>

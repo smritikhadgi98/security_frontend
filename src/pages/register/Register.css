@@ -81,7 +81,7 @@
 
 .error-message {
   position: absolute;
-  top: -30px; /* Adjusted for better positioning */
+  top: -20px; /* Adjusted for better positioning */
   left: 0;
   color: #FF6B6B; /* Soft red for error messages */
   font-size: 14px;
